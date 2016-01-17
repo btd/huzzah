@@ -52,30 +52,30 @@ That means you can configure some loggers and all nested loggers will reuse thie
 
 1. Install
 
-`npm install --save huzzah`
+	`npm install --save huzzah`
 
 2. Configure
 
-```js
-var huzzah = require('huzzah');
-
-// get settings of some loggers
-var settingsOfRootLogger = huzzah.settings('root');
-
-settingsOfRootLogger
-	// let add console handler
-	.addHandler(new ConsoleHandler())
-	// let add output to file
-	.addHandler(new StreamHandler(fs.createWriteStream('debug.log')))
-
-```
-
-See API.md for more info.
+	```js
+	var huzzah = require('huzzah');
+	
+	// get settings of some loggers
+	var settingsOfRootLogger = huzzah.settings('root');
+	
+	settingsOfRootLogger
+		// let add console handler
+		.addHandler(new ConsoleHandler())
+		// let add output to file
+		.addHandler(new StreamHandler(fs.createWriteStream('debug.log')))
+	
+	```
+	
+	See API.md for more info.
 
 3. Use
 
-```js
-var logger = require('huzzah').get('some_logger');
-
-logger.error('Some error happen', err);
-```
+	```js
+	var logger = require('huzzah').get('some_logger');
+	
+	logger.error('Some error happen', err);
+	```
