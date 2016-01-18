@@ -36,8 +36,8 @@ LoggerFactory.prototype = {
     var message = printf(args);
     var levelname = LEVELS[level];
 
-    names.forEach(function(name) {
-      var settings = this._settings[name];
+    names.forEach(function(loggerName) {
+      var settings = this._settings[loggerName];
       if(settings) {
         settings.handle({
           name: name,
