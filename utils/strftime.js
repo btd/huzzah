@@ -121,7 +121,6 @@ module.exports.formatter = function compileFormatter(format) {
   // Some other syntax extensions from Ruby are supported: %-, %_, and %0
   // to pad with nothing, space, or zero (respectively).
 
-  /*jshint maxcomplexity: 40*/
   format.replace(RE, function (_, mod, c, offset) {
     var padding = mod === '-' ? ''
       : mod === '_' ? ' '
@@ -309,7 +308,6 @@ module.exports.formatter = function compileFormatter(format) {
 
   var result;
   try {
-    /*jshint evil: true */
     result = Function(argumentKeys, 'return ' + source)
       .apply(undefined, argumentValues);
   } catch (e) {
