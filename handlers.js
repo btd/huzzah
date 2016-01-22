@@ -45,7 +45,7 @@ NullHandler.prototype = {
 
 module.exports.NullHandler = NullHandler;
 
-var DEFAULT_FORMAT = '[%date] %-5level %logger - %message%n%error';
+var DEFAULT_FORMAT = '%date %-5level %logger - %message%n%error';
 
 /**
  * Used as base class for most handlers
