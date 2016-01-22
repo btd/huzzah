@@ -30,4 +30,4 @@ rules:
   new-cap: 0
   callback-return: 0
   no-loop-func: 0
-  strict: [2, "global"]
+  strict: 0
