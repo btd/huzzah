@@ -17,7 +17,7 @@ function parentNames(name) {
 /**
  * Produce log records. It could not be create manuall,
  * always use LoggerFactory instance to create loggers.
- * 
+ *
  * @param {LoggerFactory} factory factory, holding this logger
  * @param {string} name    name of this logger
  * @class
@@ -53,6 +53,7 @@ function defineLogLevelMethod(name, level) {
  *
  * @memberof Logger
  * @instance
+ * @param {...*} args Any arguments. Error must be one and last
  * @name trace
  */
 defineLogLevelMethod('trace', LEVELS.TRACE);
@@ -62,6 +63,7 @@ defineLogLevelMethod('trace', LEVELS.TRACE);
  *
  * @memberof Logger
  * @instance
+ * @param {...*} args Any arguments. Error must be one and last
  * @name debug
  */
 defineLogLevelMethod('debug', LEVELS.DEBUG);
@@ -71,6 +73,7 @@ defineLogLevelMethod('debug', LEVELS.DEBUG);
  *
  * @memberof Logger
  * @instance
+ * @param {...*} args Any arguments. Error must be one and last
  * @name info
  */
 defineLogLevelMethod('info' , LEVELS.INFO );
@@ -80,6 +83,7 @@ defineLogLevelMethod('info' , LEVELS.INFO );
  *
  * @memberof Logger
  * @instance
+ * @param {...*} args Any arguments. Error must be one and last
  * @name warn
  */
 defineLogLevelMethod('warn' , LEVELS.WARN );
@@ -89,6 +93,7 @@ defineLogLevelMethod('warn' , LEVELS.WARN );
  *
  * @memberof Logger
  * @instance
+ * @param {...*} args Any arguments. Error must be one and last
  * @name error
  */
 defineLogLevelMethod('error', LEVELS.ERROR);

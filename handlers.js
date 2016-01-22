@@ -62,8 +62,27 @@ BaseHandler.prototype = Object.create(NullHandler.prototype);
 /**
  * Set log record format for this handler.
  * Default record format is `[%date] %-5level %logger - %message%n%error`
- * @param  {string|function} format
- * @return {this} 
+ *
+ * Possible parameters:
+ * - `%d{FORMAT}` or `%date{FORMAT}` - how to format record timestamp. `{FORMAT}` is optional stftime string, by default it is `%Y/%m/%d %H:%M:%S,%L`
+ * - `%pid` - output process.pid
+ * - `%level` or `%le` or `%p` - output record level name like ERROR or WARN
+ * - `%logger` or `%lo` or `%c` - output logger name
+ * - `%%` - output %
+ * - `%n` - output EOL
+ * - `%err` or `%error` - output stack trace of passed error
+ *
+ * Also available text decorators (now only colors):
+ * - `%highlight(text)` - will decorate passed text with record level decorator
+ * - `%cyan(text)`
+ * - other colors
+ * - `%cyan.bold(text)`
+ * - other bold colors
+ *
+ * Example: `%date000 %highlight(%5level) %cyan(%logger) - %message%n%error`
+ *
+ * @param  {string|function} format - It is either formatted string as described, or function returning string and accepts just one argument log record
+ * @return {this}
  */
 BaseHandler.prototype.setFormat = function(format) {
   if(typeof format === 'string') {
