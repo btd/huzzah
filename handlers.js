@@ -78,19 +78,13 @@ module.exports.BaseHandler = BaseHandler;
 
 /**
  * Just simple console handler
- * @param {boolean} colorize Do we need to produce shiny colored log record
  */
-function ConsoleHandler(colorize) {
+function ConsoleHandler() {
   BaseHandler.call(this);
-
-  this._colorize = !!colorize;
 }
 
 ConsoleHandler.prototype = Object.create(BaseHandler.prototype);
 ConsoleHandler.prototype._handle = function(record) {
-  if(this._colorize) {
-    record.levelname = ConsoleHandler.COLORS[record.levelname];
-  }
   var line = this.formatRecord(record);
   if(record.level > LEVELS.INFO) {
     process.stderr.write(line);
@@ -98,17 +92,6 @@ ConsoleHandler.prototype._handle = function(record) {
     process.stdout.write(line);
   }
 }
-
-
-ConsoleHandler.COLORS = {}
-function addColoredLevel(level, code) {
-  ConsoleHandler.COLORS[LEVELS[level]] = '\u001b[' + code + 'm' + LEVELS[level] + '\u001b[39m';
-}
-addColoredLevel(LEVELS.TRACE, 36);
-addColoredLevel(LEVELS.DEBUG, 34);
-addColoredLevel(LEVELS.INFO, 32);
-addColoredLevel(LEVELS.WARN, 33);
-addColoredLevel(LEVELS.ERROR, 31);
 
 module.exports.ConsoleHandler = ConsoleHandler;
 
