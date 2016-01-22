@@ -1,0 +1,94 @@
+{
+	function Const(text) {
+    	return { type: 'const', v: text }
+    }
+    function Var(name, pad, trunc, args) {
+    	return { type: 'var', name: name, pad: pad, trunc: trunc, args: args }
+    }
+    function Dec(name, nodes) {
+    	return { type: 'decorator', name: name, nodes: nodes || [] }
+    }
+}
+FORMAT = head:TEXT tail:((FUNC/VAR) TEXT)* {
+	var res = [head]
+    tail.forEach(function(t) {
+    	t.forEach(function(tt) {
+        	res.push(tt);
+        })
+    })
+	return res
+}
+FUNC = PARAM_START name:FUNC_NAME '(' args:FUNC_ARG_TEXT ')' {
+	return Dec(name, args)
+}
+PARAM_START = '%' { return '' }
+FUNC_NAME = 'highlight'
+
+			      / 'cyan'
+            / 'black'
+            / 'red'
+            / 'green'
+            / 'yellow'
+            / 'magenta'
+            / 'blue'
+            / 'white'
+
+            / 'cyan.bold'
+            / 'black.bold'
+            / 'red.bold'
+            / 'green.bold'
+            / 'yellow.bold'
+            / 'magenta.bold'
+            / 'blue.bold'
+            / 'white.bold'
+
+CHAR = (!PARAM_START c:.) { return c }
+TEXT = c:CHAR* { return Const(c.join(''))}
+
+VCHAR = (!PARAM_START !')' c:.) { return c }
+VTEXT = c:VCHAR* { return Const(c.join(''))}
+
+CCHAR = (!'}' c:.) { return c }
+CTEXT = c:CCHAR* { return c.join('') }
+
+POSITIVE_NUMBER = d:[0-9]+ { return parseInt(d.join(''), 10) }
+NUMBER = s:'-'? n:POSITIVE_NUMBER { return s === '-' ? -n: n }
+
+VAR = PARAM_START
+		pad:(NUMBER?)
+        trunc:(('.' n:NUMBER{ return n })?)
+        name:VAR_NAME
+        args:VAR_OPTS? {
+        	if(name === '%') return Const('%')
+
+			return Var(name, pad, trunc, args)
+		}
+VAR_OPTS = '{' v:CTEXT '}' { return v }
+
+VAR_NAME =
+		'%' /
+        VAR_FORMAT_LOGGER /
+        VAR_FORMAT_LEVEL /
+        VAR_FORMAT_DATE /
+        VAR_FORMAT_PID /
+        VAR_FORMAT_MESSAGE /
+        VAR_FORMAT_EOL /
+        VAR_FORMAT_ERROR
+
+VAR_FORMAT_LOGGER = ('logger' / 'lo' / 'c') { return 'logger' }
+VAR_FORMAT_LEVEL = ('level' / 'le' / 'p') { return 'level' }
+VAR_FORMAT_DATE = ('date' / 'd') { return 'date' }
+VAR_FORMAT_PID = 'pid'
+VAR_FORMAT_MESSAGE = ('message' / 'msg' / 'm') { return 'message' }
+VAR_FORMAT_EOL = 'n'
+VAR_FORMAT_ERROR = ('error' / 'err') { return 'error' }
+
+FUNC_ARG_TEXT = head:VTEXT tail:(VAR VTEXT)* {
+	var res = [head]
+    tail.forEach(function(t) {
+    	t.forEach(function(tt) {
+        	res.push(tt);
+        })
+    })
+	return res
+}

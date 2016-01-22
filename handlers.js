@@ -1,6 +1,6 @@
 var LEVELS = require('./levels');
 
-var compileFormat = require('./utils/compileFormat');
+var compileFormat = require('./utils/format');
 
 /**
  * Basic handler. Does not actually handle anything.
