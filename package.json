@@ -1,6 +1,6 @@
 {
   "name": "huzzah",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "devDependencies": {
     "benchmark": "^2.0.0",
     "bunyan": "latest",
