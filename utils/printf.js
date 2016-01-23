@@ -38,10 +38,10 @@ function format(args) {
     if (x === null || (typeof x !== 'object' && typeof x !== 'symbol')) {
       str += ' ' + x;
     } else {
-      str += ' ' + inspect(x, inspectOptions);
+      str += ' ' + util.inspect(x, inspectOptions);
     }
   }
   return str;
-};
+}
 
 module.exports = format;
