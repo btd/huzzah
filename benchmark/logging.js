@@ -72,8 +72,5 @@ suite
   .on('cycle', function (event) {
     console.warn(String(event.target));
   })
-  .on('complete', function () {
-    console.warn('Fastest is ' + this.filter('fastest').pluck('name'));
-  })
 // run async
-  .run({ 'async': true });
+  .run();

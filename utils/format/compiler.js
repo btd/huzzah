@@ -141,10 +141,14 @@ module.exports = function compile(onodes) {
           }
 
           switch(node.name) {
+            case 'c':
+            case 'lo':
             case 'logger':
               write('rec.name');
               break;
 
+            case 'p':
+            case 'le':
             case 'level':
               write('rec.levelname');
               break;
@@ -153,6 +157,8 @@ module.exports = function compile(onodes) {
               write('rec.pid');
               break;
 
+            case 'm':
+            case 'msg':
             case 'message':
               write('rec.message');
               break;
@@ -161,10 +167,12 @@ module.exports = function compile(onodes) {
               write(quote(EOL));
               break;
 
+            case 'err':
             case 'error':
               write('(rec.err ? __formatError(rec.err, ' + (node.args ? quote(node.args) : 'null')  + '): "")');
               break;
 
+            case 'd':
             case 'date':
               var _name = 'dateFormat' + dateFormats.length;
               argumentKeys.push(_name);

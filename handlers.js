@@ -23,7 +23,7 @@ NullHandler.prototype = {
       level = LEVELS[level.toUpperCase()];
     }
     if(typeof level !== 'number' || !(level in LEVELS)) {
-      throw new Error(`${level} does not exists`);
+      throw new Error(level + ' does not exists');
     }
     this._level = level;
     return this;

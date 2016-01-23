@@ -1,4 +1,4 @@
-extends: eslint
+extends: eslint:recommended
 
 env:
   node: true

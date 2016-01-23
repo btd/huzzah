@@ -2,14 +2,25 @@
 var EOL = require('os').EOL;
 
 var DefaultLocale = {
-  days: [ 'Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday' ],
-  shortDays: [ 'Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat' ],
-  months: [ 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December' ],
-  shortMonths: [ 'Jan', 'Feb', 'Mar', 'Apr',  'May','Jun', 'Jul', 'Aug','Sep','Oct','Nov','Dec' ],
+  days: ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+  shortDays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+  months: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+  shortMonths: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
   AM: 'AM',
   PM: 'PM',
   am: 'am',
-  pm: 'pm'
+  pm: 'pm',
+  formats: {
+    D: '%m/%d/%y',
+    F: '%Y-%m-%d',
+    R: '%H:%M',
+    T: '%H:%M:%S',
+    X: '%T',
+    c: '%a %b %d %X %Y',
+    r: '%I:%M:%S %p',
+    v: '%e-%b-%Y',
+    x: '%D'
+  }
 };
 
 function cacheBack(arr) {
@@ -95,7 +106,7 @@ function hours12(d) {
   return hour;
 }
 
-var RE = /%([-_0])?(.)/g;
+var RE = /%([-_0])?([a-zA-Z%])/g;
 
 var timestampIndex = 0;
 
@@ -287,6 +298,9 @@ module.exports.formatter = function compileFormatter(format) {
         replaceVal = '(((__d = d.getTimezoneOffset()) < 0 ? "+" : "-") ' +
           '+ __pad2(Math.abs(__d / 60), "0") + __pad2(__d % 60, "0"))';
         break;
+
+      default:
+        throw new Error('%' + c + ' strftime format not supported');
     }
 
     source += "' +\n" + replaceVal + " +\n'";

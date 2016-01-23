@@ -2,18 +2,16 @@
   "name": "huzzah",
   "version": "0.1.0",
   "devDependencies": {
-    "benchmark": "1.0.0",
+    "benchmark": "^2.0.0",
     "bunyan": "latest",
     "eslint": "^1.10.3",
     "eslint-config-eslint": "^1.0.0",
     "intel": "latest",
-    "istanbul": "~0.2.4",
     "log4js": "latest",
     "winston": "latest"
   },
   "description": "Fastest hierarchical text logger",
   "main": "./index.js",
-
   "bugs": "https://github.com/btd/huzzah/issues",
   "repository": {
     "type": "git",
@@ -26,5 +24,8 @@
     "console"
   ],
   "author": "Denis Bardadym <bardadymchik@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "benchmark": "^2.0.0"
+  }
 }

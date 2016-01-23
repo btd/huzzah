@@ -1,5 +1,5 @@
-var parser = require('./message_parser');
-var compiler = require('./message_compiler');
+var parse = require('./parser');
+var compile = require('./compiler');
 
 var formatCache = {};
 
@@ -8,8 +8,10 @@ module.exports = function(text) {
     return formatCache[text];
   }
 
-  var nodes = parser.parse(text);
-  var result = compiler(nodes);
+  var nodes = parse(text);
+  var result = compile(nodes);
+
   formatCache[text] = result;
+  
   return result;
 }
