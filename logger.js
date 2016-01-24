@@ -34,6 +34,7 @@ Logger.prototype = {
    *
    * @param  {number} level Log level
    * @param  {Array} args   Arguments
+   * @private
    */
   log: function(level, args) {
     this._factory.log(this._names, level, args);
@@ -49,52 +50,82 @@ function defineLogLevelMethod(name, level) {
 }
 
 /**
- * Create log record with level trace
+ * Create log record with level TRACE. If first argument is string, it is used as message format, like console.log do.
+ * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
  *
  * @memberof Logger
  * @instance
- * @param {...*} args Any arguments. Error must be one and last
+ * @param {...*} args Any arguments. Error must be one and last.
  * @name trace
+ * @example
+ *
+ * logger.trace('User entered %s', userInput);
+ *
+ * logger.error('Error happen while sending email', err);
  */
 defineLogLevelMethod('trace', LEVELS.TRACE);
 
 /**
- * Create log record with level debug
+ * Create log record with level DEBUG. If first argument is string, it is used as message format, like console.log do.
+ * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
  *
  * @memberof Logger
  * @instance
- * @param {...*} args Any arguments. Error must be one and last
- * @name debug
+ * @param {...*} args Any arguments. Error must be one and last.
+ * @name trace
+ * @example
+ *
+ * logger.trace('User entered %s', userInput);
+ *
+ * logger.error('Error happen while sending email', err);
  */
 defineLogLevelMethod('debug', LEVELS.DEBUG);
 
 /**
- * Create log record with level info
+ * Create log record with level INFO. If first argument is string, it is used as message format, like console.log do.
+ * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
  *
  * @memberof Logger
  * @instance
- * @param {...*} args Any arguments. Error must be one and last
- * @name info
+ * @param {...*} args Any arguments. Error must be one and last.
+ * @name trace
+ * @example
+ *
+ * logger.trace('User entered %s', userInput);
+ *
+ * logger.error('Error happen while sending email', err);
  */
 defineLogLevelMethod('info' , LEVELS.INFO );
 
 /**
- * Create log record with level warn
+ * Create log record with level WARN. If first argument is string, it is used as message format, like console.log do.
+ * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
  *
  * @memberof Logger
  * @instance
- * @param {...*} args Any arguments. Error must be one and last
- * @name warn
+ * @param {...*} args Any arguments. Error must be one and last.
+ * @name trace
+ * @example
+ *
+ * logger.trace('User entered %s', userInput);
+ *
+ * logger.error('Error happen while sending email', err);
  */
 defineLogLevelMethod('warn' , LEVELS.WARN );
 
 /**
- * Create log record with level error
+ * Create log record with level ERROR. If first argument is string, it is used as message format, like console.log do.
+ * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
  *
  * @memberof Logger
  * @instance
- * @param {...*} args Any arguments. Error must be one and last
- * @name error
+ * @param {...*} args Any arguments. Error must be one and last.
+ * @name trace
+ * @example
+ *
+ * logger.trace('User entered %s', userInput);
+ *
+ * logger.error('Error happen while sending email', err);
  */
 defineLogLevelMethod('error', LEVELS.ERROR);
 
