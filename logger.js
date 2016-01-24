@@ -72,7 +72,7 @@ defineLogLevelMethod('trace', LEVELS.TRACE);
  * @memberof Logger
  * @instance
  * @param {...*} args Any arguments. Error must be one and last.
- * @name trace
+ * @name debug
  * @example
  *
  * logger.trace('User entered %s', userInput);
@@ -88,7 +88,7 @@ defineLogLevelMethod('debug', LEVELS.DEBUG);
  * @memberof Logger
  * @instance
  * @param {...*} args Any arguments. Error must be one and last.
- * @name trace
+ * @name info
  * @example
  *
  * logger.trace('User entered %s', userInput);
@@ -104,7 +104,7 @@ defineLogLevelMethod('info' , LEVELS.INFO );
  * @memberof Logger
  * @instance
  * @param {...*} args Any arguments. Error must be one and last.
- * @name trace
+ * @name warn
  * @example
  *
  * logger.trace('User entered %s', userInput);
@@ -120,7 +120,7 @@ defineLogLevelMethod('warn' , LEVELS.WARN );
  * @memberof Logger
  * @instance
  * @param {...*} args Any arguments. Error must be one and last.
- * @name trace
+ * @name error
  * @example
  *
  * logger.trace('User entered %s', userInput);
