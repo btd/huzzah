@@ -55,7 +55,7 @@ var timestampIndex = 0;
 module.exports = function compile(nodes, locale, compileFormatter) {
   var source = "";
   var dateFormats = [];
-  var argumentKeys = ['l', 'pad2', 'padZero3', 'hours12', 'weekNumber', 'd'];
+  var argumentKeys = ['l', 'pad2', 'padZero3', 'hours12', 'weekNumber'];
   var argumentValues = [locale, pad2, padZero3, hours12, weekNumber];
 
   function preCompileFormat(format) {
@@ -264,7 +264,7 @@ module.exports = function compile(nodes, locale, compileFormatter) {
   source = 'function(d) {\n' +
     "var " + argumentKeys.map(function(a) {
       return '__' + a + ' = ' + a;
-    }).join(', ') + ", __p = '';\n" +
+    }).join(', ') + ", __d, __p = '';\n" +
     source +
     'return __p;\n}';
   var result;
