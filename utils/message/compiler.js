@@ -1,7 +1,8 @@
 var EOL = require('os').EOL;
+var quote = require('../quote');
 var LEVELS = require('../../levels');
 
-var compileTimestamp = require('../strftime').formatter;
+var compileTimestamp = require('../strftime');
 
 var spacePadding = new Array(1000).join(' ');
 
@@ -29,22 +30,6 @@ function trunc(str, value) {
   }
 }
 
-var stringEscapes = {
-  '\\': '\\',
-  "'": "'",
-  '\n': 'n',
-  '\r': 'r',
-  '\t': 't',
-  '\u2028': 'u2028',
-  '\u2029': 'u2029'
-};
-
-/* Used to match unescaped characters in compiled string literals */
-var reUnescapedString = /['\n\r\t\u2028\u2029\\]/g;
-
-function escapeStringChar(match) {
-  return '\\' + stringEscapes[match];
-}
 
 var MAX_TRACE_LENGTH = 1e10;
 
@@ -70,10 +55,6 @@ function formatError(err, depth) {
     out += trace[i] + EOL;
   }
   return out;
-}
-
-function quote(text) {
-  return "'" + text.replace(reUnescapedString, escapeStringChar) + "'";
 }
 
 function decorator(code) {
