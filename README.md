@@ -10,13 +10,12 @@ Let step by step explain what does it mean.
 
 ```
 $ node benchmark/logging.js
-console.info x 3,410,703 ops/sec ±1.53% (81 runs sampled)
-huzzah.info x 456,746 ops/sec ±1.32% (85 runs sampled)
-winston.info x 41,010 ops/sec ±1.92% (88 runs sampled)
-intel.info x 96,199 ops/sec ±1.11% (88 runs sampled)
-bunyan.info x 72,817 ops/sec ±1.18% (96 runs sampled)
-log4js.info x 43,216 ops/sec ±1.33% (92 runs sampled)
-Fastest is console.info
+console.info x 3,798,029 ops/sec ±2.62% (92 runs sampled)
+huzzah.info x 511,637 ops/sec ±1.32% (91 runs sampled)
+winston.info x 40,114 ops/sec ±3.59% (80 runs sampled)
+intel.info x 113,133 ops/sec ±0.32% (90 runs sampled)
+bunyan.info x 85,245 ops/sec ±0.26% (92 runs sampled)
+log4js.info x 48,655 ops/sec ±0.24% (91 runs sampled)
 ```
 
 ## Dead simple
@@ -58,24 +57,24 @@ That means you can configure some loggers and all nested loggers will reuse thie
 
 	```js
 	var huzzah = require('huzzah');
-	
+
 	// get settings of some loggers
 	var settingsOfRootLogger = huzzah.settings('root');
-	
+
 	settingsOfRootLogger
 		// let add console handler
 		.addHandler(new ConsoleHandler())
 		// let add output to file
 		.addHandler(new StreamHandler(fs.createWriteStream('debug.log')))
-	
+
 	```
-	
+
 	See API.md for more info.
 
 3. Use
 
 	```js
 	var logger = require('huzzah').get('some_logger');
-	
+
 	logger.error('Some error happen', err);
 	```
