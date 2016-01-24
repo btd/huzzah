@@ -3,6 +3,8 @@ var LEVELS = require('./levels');
 var Logger = require('./logger');
 var LoggerSettings = require('./settings');
 
+var PID = process.pid;
+
 /**
  * Handler logger and its settings manipulation
  *
@@ -31,7 +33,6 @@ LoggerFactory.prototype = {
   log: function(names, level, args) {
     var err = args[args.length - 1] instanceof Error ? args.pop(): null;
     var name = names[0];
-    var pid = process.pid;
     var timestamp = new Date();
     var message = printf(args);
     var levelname = LEVELS[level];
@@ -44,7 +45,7 @@ LoggerFactory.prototype = {
           level: level,
           levelname: levelname,
           args: args,
-          pid: pid,
+          pid: PID,
           timestamp: timestamp,
           err: err,
           message: message
@@ -61,7 +62,7 @@ LoggerFactory.prototype = {
   settings: function(name) {
     this._settings[name] = this._settings[name] || new LoggerSettings();
     return this._settings[name];
-  },
+  }
 }
 
 module.exports = LoggerFactory;
