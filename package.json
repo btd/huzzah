@@ -24,8 +24,5 @@
     "console"
   ],
   "author": "Denis Bardadym <bardadymchik@gmail.com>",
-  "license": "MIT",
-  "dependencies": {
-    "benchmark": "^2.0.0"
-  }
+  "license": "MIT"
 }
