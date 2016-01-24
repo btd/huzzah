@@ -1,8 +1,3 @@
-/* This Source Code Form is subject to the terms of the Mozilla Public
- * License, v. 2.0. If a copy of the MPL was not distributed with this
- * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
-
-const Console = require('console').Console;
 const EE = require('events').EventEmitter;
 
 const winston = require('winston');
@@ -21,8 +16,6 @@ stdout.write = function (out, encoding, cb) {
   cb && cb();
   return true;
 };
-
-var _console = new Console(stdout, stdout);
 
 var f = new LoggerFactory();
 var l = f.get('root');
@@ -48,9 +41,6 @@ var Benchmark = require('benchmark');
 var suite = new Benchmark.Suite('logging.info()');
 
 suite
-  .add('console.info', function() {
-    _console.info('asdf');
-  })
   .add('huzzah.info', function() {
     l.info('asdf');
   })
