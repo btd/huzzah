@@ -1,13 +1,13 @@
 # LoggerSettings
 
-[settings.js:10-14](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/settings.js#L10-L14 "Source code on GitHub")
+[settings.js:10-14](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/settings.js#L10-L14 "Source code on GitHub")
 
 Holds settings of one logger.
 It is max accepted log level and handlers
 
 ## addHandler
 
-[settings.js:41-44](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/settings.js#L41-L44 "Source code on GitHub")
+[settings.js:41-44](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/settings.js#L41-L44 "Source code on GitHub")
 
 Adds handler to logger
 
@@ -19,7 +19,7 @@ Returns **this**
 
 ## setLevel
 
-[settings.js:29-29](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/settings.js#L29-L29 "Source code on GitHub")
+[settings.js:29-29](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/settings.js#L29-L29 "Source code on GitHub")
 
 Set max accepted log level. Default value ALL.
 It means if you set log level for this logger to INFO, than
@@ -34,14 +34,14 @@ Returns **this**
 
 # BaseHandler
 
-[handlers.js:54-58](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/handlers.js#L54-L58 "Source code on GitHub")
+[handlers.js:54-58](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/handlers.js#L54-L58 "Source code on GitHub")
 
 Used as base class for most handlers
 All extensions should implement method `_handle(record)`
 
 ## setFormat
 
-[handlers.js:87-94](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/handlers.js#L87-L94 "Source code on GitHub")
+[handlers.js:87-94](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/handlers.js#L87-L94 "Source code on GitHub")
 
 Set log record format for this handler.
 Default record format is `[%date] %-5level %logger - %message%n%error`
@@ -74,93 +74,19 @@ Returns **this**
 
 # ConsoleHandler
 
-[handlers.js:101-103](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/handlers.js#L101-L103 "Source code on GitHub")
+[handlers.js:101-103](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/handlers.js#L101-L103 "Source code on GitHub")
 
 Just simple console handler
 
-# Logger
-
-[logger.js:25-28](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/logger.js#L25-L28 "Source code on GitHub")
-
-Produce log records. It could not be create manuall,
-always use LoggerFactory instance to create loggers.
-
-**Parameters**
-
--   `factory` **LoggerFactory** factory, holding this logger
--   `name` **string** name of this logger
-
-## debug
-
-[logger.js:69-69](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/logger.js#L69-L69 "Source code on GitHub")
-
-Create log record with level debug
-
-**Parameters**
-
--   `args` **...Any** Any arguments. Error must be one and last
-
-## error
-
-[logger.js:99-99](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/logger.js#L99-L99 "Source code on GitHub")
-
-Create log record with level error
-
-**Parameters**
-
--   `args` **...Any** Any arguments. Error must be one and last
-
-## info
-
-[logger.js:79-79](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/logger.js#L79-L79 "Source code on GitHub")
-
-Create log record with level info
-
-**Parameters**
-
--   `args` **...Any** Any arguments. Error must be one and last
-
-## log
-
-[logger.js:38-40](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/logger.js#L38-L40 "Source code on GitHub")
-
-Create log record with given level and arguments.
-Usually not used.
-
-**Parameters**
-
--   `level` **number** Log level
--   `args` **Array** Arguments
-
-## trace
-
-[logger.js:59-59](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/logger.js#L59-L59 "Source code on GitHub")
-
-Create log record with level trace
-
-**Parameters**
-
--   `args` **...Any** Any arguments. Error must be one and last
-
-## warn
-
-[logger.js:89-89](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/logger.js#L89-L89 "Source code on GitHub")
-
-Create log record with level warn
-
-**Parameters**
-
--   `args` **...Any** Any arguments. Error must be one and last
-
 # LoggerFactory
 
-[factory.js:11-14](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/factory.js#L11-L14 "Source code on GitHub")
+[factory.js:11-14](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/factory.js#L11-L14 "Source code on GitHub")
 
 Handler logger and its settings manipulation
 
 ## get
 
-[factory.js:23-26](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/factory.js#L23-L26 "Source code on GitHub")
+[factory.js:23-26](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/factory.js#L23-L26 "Source code on GitHub")
 
 Returns logger with given name
 
@@ -172,7 +98,7 @@ Returns **Logger**
 
 ## settings
 
-[factory.js:61-64](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/factory.js#L61-L64 "Source code on GitHub")
+[factory.js:61-64](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/factory.js#L61-L64 "Source code on GitHub")
 
 Returns settings for logger with given name
 
@@ -184,21 +110,128 @@ Returns **LoggerSettings**
 
 # LEVELS
 
-[levels.js:8-16](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/levels.js#L8-L16 "Source code on GitHub")
+[levels.js:8-16](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/levels.js#L8-L16 "Source code on GitHub")
 
 Log levels. Log levels have a priority.
 ALL < TRACE < DEBUG < INFO < WARN < ERROR < OFF
 
+# Logger
+
+[logger.js:25-28](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/logger.js#L25-L28 "Source code on GitHub")
+
+Produce log records. It could not be create manuall,
+always use LoggerFactory instance to create loggers.
+
+**Parameters**
+
+-   `factory` **LoggerFactory** factory, holding this logger
+-   `name` **string** name of this logger
+
+## trace
+
+[logger.js:130-130](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/logger.js#L130-L130 "Source code on GitHub")
+
+Create log record with level ERROR. If first argument is string, it is used as message format, like console.log do.
+Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
+
+**Parameters**
+
+-   `args` **...Any** Any arguments. Error must be one and last.
+
+**Examples**
+
+```javascript
+logger.trace('User entered %s', userInput);
+
+logger.error('Error happen while sending email', err);
+```
+
+## trace
+
+[logger.js:114-114](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/logger.js#L114-L114 "Source code on GitHub")
+
+Create log record with level WARN. If first argument is string, it is used as message format, like console.log do.
+Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
+
+**Parameters**
+
+-   `args` **...Any** Any arguments. Error must be one and last.
+
+**Examples**
+
+```javascript
+logger.trace('User entered %s', userInput);
+
+logger.error('Error happen while sending email', err);
+```
+
+## trace
+
+[logger.js:98-98](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/logger.js#L98-L98 "Source code on GitHub")
+
+Create log record with level INFO. If first argument is string, it is used as message format, like console.log do.
+Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
+
+**Parameters**
+
+-   `args` **...Any** Any arguments. Error must be one and last.
+
+**Examples**
+
+```javascript
+logger.trace('User entered %s', userInput);
+
+logger.error('Error happen while sending email', err);
+```
+
+## trace
+
+[logger.js:82-82](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/logger.js#L82-L82 "Source code on GitHub")
+
+Create log record with level DEBUG. If first argument is string, it is used as message format, like console.log do.
+Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
+
+**Parameters**
+
+-   `args` **...Any** Any arguments. Error must be one and last.
+
+**Examples**
+
+```javascript
+logger.trace('User entered %s', userInput);
+
+logger.error('Error happen while sending email', err);
+```
+
+## trace
+
+[logger.js:66-66](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/logger.js#L66-L66 "Source code on GitHub")
+
+Create log record with level TRACE. If first argument is string, it is used as message format, like console.log do.
+Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
+
+**Parameters**
+
+-   `args` **...Any** Any arguments. Error must be one and last.
+
+**Examples**
+
+```javascript
+logger.trace('User entered %s', userInput);
+
+logger.error('Error happen while sending email', err);
+```
+
 # NullHandler
 
-[handlers.js:10-12](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/handlers.js#L10-L12 "Source code on GitHub")
+[handlers.js:10-12](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/handlers.js#L10-L12 "Source code on GitHub")
 
 Basic handler. Does not actually handle anything.
 Usefull for extensions and stubs
 
 ## setLevel
 
-[handlers.js:21-30](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/handlers.js#L21-L30 "Source code on GitHub")
+[handlers.js:21-30](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/handlers.js#L21-L30 "Source code on GitHub")
 
 Set max accepted log level for this handler
 
@@ -210,7 +243,7 @@ Returns **this**
 
 # StreamHandler
 
-[handlers.js:122-128](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/handlers.js#L122-L128 "Source code on GitHub")
+[handlers.js:122-128](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/handlers.js#L122-L128 "Source code on GitHub")
 
 Allow to pass records
 
@@ -221,7 +254,7 @@ Allow to pass records
 
 ## setShouldFormat
 
-[handlers.js:140-143](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/handlers.js#L140-L143 "Source code on GitHub")
+[handlers.js:140-143](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/handlers.js#L140-L143 "Source code on GitHub")
 
 **Parameters**
 
@@ -231,7 +264,7 @@ Returns **this**
 
 ## setStream
 
-[handlers.js:149-152](https://github.com/btd/huzzah/blob/d730655861af1e78fdc76135eaafbb44b11288c3/handlers.js#L149-L152 "Source code on GitHub")
+[handlers.js:149-152](https://github.com/btd/huzzah/blob/1479c7ac85b25b36a5febe454e7b2607c4dd352f/handlers.js#L149-L152 "Source code on GitHub")
 
 **Parameters**
 
