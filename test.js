@@ -1,11 +1,9 @@
-'use strict';
+var LoggerFactory = require('./factory');
+var ConsoleHandler = require('./handlers').ConsoleHandler;
 
-const LoggerFactory = require('./factory');
-const ConsoleHandler = require('./handlers').ConsoleHandler;
+var f = new LoggerFactory();
 
-let f = new LoggerFactory();
-
-let logger = f.get('a.b');
+var logger = f.get('a.b');
 
 
 f.settings('a.b')
@@ -19,3 +17,4 @@ f.settings('a')
 logger.trace('Boom');
 logger.error(new Error('boom'));
 logger.warn('Everything seems ok');
+logger.fatal('Everything seems ok');
