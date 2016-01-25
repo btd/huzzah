@@ -41,11 +41,14 @@ Logger.prototype = {
   }
 }
 
-var SLICE = Array.prototype.slice;
-
 function makeLogAtLevelMethod(level) {
   return function() {
-    this.log(level, SLICE.call(arguments));
+    var len = arguments.length;
+    var args = new Array(len);
+    for(var i = 0; i < len; i++) {
+      args[i] = arguments[i];
+    }
+    this.log(level, args);
   }
 }
 
