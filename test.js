@@ -17,4 +17,3 @@ f.settings('a')
 logger.trace('Boom');
 logger.error(new Error('boom'));
 logger.warn('Everything seems ok');
-logger.fatal('Everything seems ok');

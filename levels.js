@@ -1,5 +1,3 @@
-'use strict';
-
 /**
  * Log levels. Log levels have a priority.
  * ALL < TRACE < DEBUG < INFO < WARN < ERROR < OFF
