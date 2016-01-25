@@ -4,11 +4,14 @@
   "devDependencies": {
     "benchmark": "^2.0.0",
     "bunyan": "latest",
+    "documentation": "^3.0.4",
     "eslint": "^1.10.3",
-    "eslint-config-eslint": "^1.0.0",
     "intel": "latest",
     "log4js": "latest",
     "winston": "latest"
+  },
+  "scripts": {
+    "api-doc": "documentation index.js -o API.md -f md -g"
   },
   "description": "Fastest hierarchical text logger",
   "main": "./index.js",
