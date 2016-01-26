@@ -75,7 +75,8 @@ var RECORD_MAPPING = {
   pid: processNumber,
   timestamp: processDate,
   err: undefined,
-  message: processString
+  message: processString,
+  __hasAdditionalFields: undefined
 };
 
 var RECORD_FIELDS = Object.keys(RECORD_MAPPING)
@@ -100,9 +101,15 @@ module.exports = function(serializers) {
   writeLine(quote('{'));
 
   var defaultProperties = [];
+  var hasStandardPropertySerializer = false;
 
   Object.keys(RECORD_MAPPING).forEach(function(name) {
-    if(RECORD_MAPPING[name] !== undefined && !serializers[name]) {
+    if(serializers[name]) {
+      hasStandardPropertySerializer = true;
+      return;
+    }
+
+    if(RECORD_MAPPING[name] !== undefined) {
       defaultProperties.push(
         '__p += ' +
         quote(quote(name)) +
@@ -118,11 +125,11 @@ module.exports = function(serializers) {
   write(defaultProperties.join('__p += ",";\n'));
 
   if(!serializers.err) {
-    write('if(rec.err) { __p += "," + ' + processError('rec.err') + '}\n');
+    write('if(rec.err) {\n__p += "," + ' + processError('rec.err') + '\n}\n');
   }
 
   write([
-    'if(rec.__hasAdditionalFields) {',
+    hasStandardPropertySerializer ? '': 'if(rec.__hasAdditionalFields) {',
       'for(var name in rec) {',
         'var value = rec[name];',
         'if(value === undefined) continue;',
@@ -137,7 +144,7 @@ module.exports = function(serializers) {
           '__p += "," + __quote(name) + ":" + __stringify(value);',
         '}',
       '}',
-    '}'
+    hasStandardPropertySerializer ? '': '}'
   ].join('\n'));
 
   write('\n')
