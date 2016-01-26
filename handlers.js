@@ -4,7 +4,8 @@ var compileFormat = require('./utils/message');
 
 /**
  * Basic handler. Does not actually handle anything.
- * Usefull for extensions and stubs
+ * Usefull for extensions and stubs. All implementors must implement _handle(record)
+ * method. record instance shared among all handlers, do not modify it.
  *
  */
 function NullHandler() {

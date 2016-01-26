@@ -1,4 +1,7 @@
+var printf = require('./utils/printf');
 var LEVELS = require('./levels');
+
+var PID = process.pid;
 
 var SEP = '.';
 var ROOT = 'root';
@@ -37,7 +40,21 @@ Logger.prototype = {
    * @private
    */
   log: function(level, args) {
-    this._factory.log(this._names, level, args);
+    var err = args[args.length - 1] instanceof Error ? args.pop(): null;
+    var message = printf(args);
+
+    var record = {
+      name: this._names[0],
+      level: level,
+      levelname: LEVELS[level],
+      args: args,
+      pid: PID,
+      timestamp: new Date(),
+      err: err,
+      message: message
+    };
+
+    this._factory.log(this._names, record);
   }
 }
 
