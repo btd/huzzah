@@ -8,11 +8,7 @@ var f = new LoggerFactory();
 var logger = f.get('a.b');
 
 f.settings('a.b')
-  .addHandler(new ConsoleHandler().setFormat(jsonFormat({
-    err: function(err) {
-      return { name: err.name, message: err.message, stack: err.stack };
-    }
-  })));
+  .addHandler(new ConsoleHandler().setFormat(jsonFormat({})));
 
 f.settings('a')
   .setLevel('WARN')

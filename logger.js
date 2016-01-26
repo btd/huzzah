@@ -47,6 +47,9 @@ Logger.prototype = {
 
     var context = this._contextKeys;
     var contextLength = context.length;
+    if(contextLength) {
+      record.__hasAdditionalFields = true;
+    }
     while(contextLength--) {
       var contextKey = context[contextLength];
       record[contextKey[0]] = contextKey[1];
@@ -56,7 +59,10 @@ Logger.prototype = {
   },
 
   /**
-   * Creates new Logger with the same name, factory but with give context
+   * Creates new Logger with the same name, factory but with given context.
+   * Every property and value of context will be added to log record. This
+   * can be usefull for json logging
+   * 
    * @param  {Object} context
    * @return {Logger}         new logger with given context
    */

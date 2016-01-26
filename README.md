@@ -10,12 +10,12 @@ Let step by step explain what does it mean.
 
 ```
 $ node benchmark/logging.js
-huzzah.info text format x 785,441 ops/sec ±0.45% (91 runs sampled)
-huzzah.info json format x 110,536 ops/sec ±0.66% (90 runs sampled)
-winston.info x 38,381 ops/sec ±3.46% (78 runs sampled)
-intel.info x 105,463 ops/sec ±0.53% (87 runs sampled)
-bunyan.info x 78,780 ops/sec ±0.29% (92 runs sampled)
-log4js.info x 48,364 ops/sec ±0.33% (90 runs sampled)
+huzzah.info text format x 838,371 ops/sec ±0.74% (89 runs sampled)
+huzzah.info json format x 310,377 ops/sec ±0.81% (90 runs sampled)
+winston.info x 38,401 ops/sec ±2.86% (81 runs sampled)
+intel.info x 105,450 ops/sec ±0.65% (88 runs sampled)
+bunyan.info x 80,865 ops/sec ±0.35% (89 runs sampled)
+log4js.info x 46,854 ops/sec ±1.11% (87 runs sampled)
 ```
 
 ## Dead simple
@@ -34,8 +34,8 @@ But we still need some configuration what and where to output:
 var ConsoleHandler = require('huzzah/handlers').ConsoleHandler;
 
 require('huzzah')
-	.settings('root')// see hierarchical section about what root mean
-	.addHandler(new ConsoleHandler())
+.settings('root')// see hierarchical section about what root mean
+.addHandler(new ConsoleHandler())
 ```
 
 With code above all your loggers will output to console.
@@ -77,4 +77,34 @@ That means you can configure some loggers and all nested loggers will reuse thie
 	var logger = require('huzzah').get('some_logger');
 
 	logger.error('Some error happen', err);
+	```
+
+## FAQ
+
+1. I need logger to reject all records with log level < INFO.
+
+	```js
+	// settings it is LoggerSettings (what is returned by LoggerFactory#settings)
+	settings.setLevel('INFO');
+	```
+
+2. I want my own format of records
+
+	```js
+	settings.setFormat('%date %msg%n');
+	```
+
+3. I want to produce JSON
+
+	```js
+	var jsonFormat = require('huzzah/json-format');
+	settings.setFormat(jsonFormat());
+
+	//jsonFormat can accept bunyan style serializers
+	```
+
+4. I want to add more fields to record (for JSON output)
+
+	```js
+	logger.with({ req: req, res: res }).info('Some message');
 	```
