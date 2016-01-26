@@ -1,6 +1,23 @@
 var Logger = require('./logger');
 var LoggerSettings = require('./settings');
 
+
+var SEP = '.';
+var ROOT = 'root';
+
+function parentNames(name) {
+  var names = [];
+  var parts = name.split(SEP);
+  while(parts.length) {
+    names.push(parts.join(SEP));
+    parts.pop();
+  }
+  names.push(ROOT);
+  return names;
+}
+
+var loggersChainCache = {};
+
 /**
  * Handler logger and its settings manipulation
  *
@@ -19,15 +36,20 @@ LoggerFactory.prototype = {
    * @return {Logger}
    */
   get: function(name) {
-    this._loggers[name] = this._loggers[name] || new Logger(this, name);
-    return this._loggers[name];
+    var logger = this._loggers[name];
+    if(!logger) {
+      logger = new Logger(this, name);
+      loggersChainCache[name] = parentNames(name)
+      this._loggers[name] = logger;
+    }
+    return logger;
   },
 
   /**
    * @private
    */
-  log: function(names, record) {
-    names.forEach(function(loggerName) {
+  _processRecord: function(name, record) {
+    loggersChainCache[name].forEach(function(loggerName) {
       var settings = this._settings[loggerName];
       if(settings) {
         settings.handle(record);

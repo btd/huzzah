@@ -3,20 +3,6 @@ var LEVELS = require('./levels');
 
 var PID = process.pid;
 
-var SEP = '.';
-var ROOT = 'root';
-
-function parentNames(name) {
-  var names = [];
-  var parts = name.split(SEP);
-  while(parts.length) {
-    names.push(parts.join(SEP));
-    parts.pop();
-  }
-  names.push(ROOT);
-  return names;
-}
-
 /**
  * Produce log records. It could not be create manuall,
  * always use LoggerFactory instance to create loggers.
@@ -26,7 +12,7 @@ function parentNames(name) {
  * @class
  */
 function Logger(factory, name) {
-  this._names = parentNames(name);
+  this._name = name;
   this._factory = factory;
 }
 
@@ -41,22 +27,21 @@ Logger.prototype = {
    */
   log: function(level, args) {
     var err = args[args.length - 1] instanceof Error ? args.pop(): null;
-    var message = printf(args);
 
     var record = {
-      name: this._names[0],
+      name: this._name,
       level: level,
       levelname: LEVELS[level],
       args: args,
       pid: PID,
       timestamp: new Date(),
       err: err,
-      message: message
+      message: printf(args)
     };
 
-    this._factory.log(this._names, record);
+    this._factory._processRecord(this._name, record);
   }
-}
+};
 
 function makeLogAtLevelMethod(level) {
   return function() {
@@ -134,7 +119,5 @@ Logger.prototype.warn = makeLogAtLevelMethod(LEVELS.WARN);
  */
 Logger.prototype.error = makeLogAtLevelMethod(LEVELS.ERROR);
 
-
-Logger.ROOT = ROOT;
 
 module.exports = Logger;
