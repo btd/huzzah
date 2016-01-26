@@ -1,13 +1,14 @@
+var stringify = require('./safe-json-stringify');
 var util = require('util');
 
 var formatRegExp = /%[sdj%]/g;
 var inspectOptions = { depth: null, colors: false };
 // copy of node.js format function
 function format(args) {
-  var f = args[0];
+  var f = args[0], i;
   if (typeof f !== 'string') {
     var objects = [];
-    for (var i = 0; i < args.length; i++) {
+    for (i = 0; i < args.length; i++) {
       objects.push(util.inspect(args[i], inspectOptions));
     }
     return objects.join(' ');
@@ -15,7 +16,7 @@ function format(args) {
 
   if (args.length === 1) return f;
 
-  var i = 1;
+  i = 1;
   var len = args.length;
   var str = String(f).replace(formatRegExp, function(x) {
     if (x === '%%') return '%';
@@ -23,12 +24,7 @@ function format(args) {
     switch (x) {
       case '%s': return String(args[i++]);
       case '%d': return Number(args[i++]);
-      case '%j':
-        try {
-          return JSON.stringify(args[i++]);
-        } catch (_) {
-          return '[Circular]';
-        }
+      case '%j': return stringify(args[i++]);
         // falls through
       default:
         return x;
