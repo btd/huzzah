@@ -9,11 +9,17 @@ var PID = process.pid;
  *
  * @param {LoggerFactory} factory factory, holding this logger
  * @param {string} name    name of this logger
+ * @param {Object} context Set of keys, which will be auto-added to each record
  * @class
  */
-function Logger(factory, name) {
+function Logger(factory, name, context) {
   this._name = name;
   this._factory = factory;
+
+  this._contextKeys = [];
+  Object.keys(context || {}).forEach(function(contextKey) {
+    this._contextKeys.push([ contextKey, context[contextKey]] );
+  }, this);
 }
 
 Logger.prototype = {
@@ -26,7 +32,7 @@ Logger.prototype = {
    * @private
    */
   log: function(level, args) {
-    var err = args[args.length - 1] instanceof Error ? args.pop(): null;
+    var err = args[args.length - 1] instanceof Error ? args.pop(): undefined;
 
     var record = {
       name: this._name,
@@ -39,7 +45,28 @@ Logger.prototype = {
       message: printf(args)
     };
 
+    var context = this._contextKeys;
+    var contextLength = context.length;
+    while(contextLength--) {
+      var contextKey = context[contextLength];
+      record[contextKey[0]] = contextKey[1];
+    }
+
     this._factory._processRecord(this._name, record);
+  },
+
+  /**
+   * Creates new Logger with the same name, factory but with give context
+   * @param  {Object} context
+   * @return {Logger}         new logger with given context
+   */
+  with: function(context) {
+    // fool check
+    if(typeof context !== 'object') {
+      throw new Error('`context` must be an Object instance');
+    }
+
+    return new Logger(this._factory, this._name, context);
   }
 };
 

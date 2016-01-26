@@ -9,12 +9,13 @@ Let step by step explain what does it mean.
 ## Fastest
 
 ```
-$ node  benchmark/logging.js
-huzzah.info x 684,853 ops/sec ±0.45% (91 runs sampled)
-winston.info x 38,728 ops/sec ±3.25% (79 runs sampled)
-intel.info x 113,086 ops/sec ±0.39% (90 runs sampled)
-bunyan.info x 85,679 ops/sec ±0.32% (92 runs sampled)
-log4js.info x 47,628 ops/sec ±0.30% (89 runs sampled)
+$ node benchmark/logging.js
+huzzah.info text format x 785,441 ops/sec ±0.45% (91 runs sampled)
+huzzah.info json format x 110,536 ops/sec ±0.66% (90 runs sampled)
+winston.info x 38,381 ops/sec ±3.46% (78 runs sampled)
+intel.info x 105,463 ops/sec ±0.53% (87 runs sampled)
+bunyan.info x 78,780 ops/sec ±0.29% (92 runs sampled)
+log4js.info x 48,364 ops/sec ±0.33% (90 runs sampled)
 ```
 
 ## Dead simple
