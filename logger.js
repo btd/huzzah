@@ -72,7 +72,7 @@ function makeLogAtLevelMethod(level) {
       args[i] = arguments[i];
     }
     this.log(level, args);
-  }
+  };
 }
 
 /**

@@ -280,4 +280,4 @@ module.exports = function compile(nodes, locale, compileFormatter) {
   result.source = source;
 
   return result;
-}
+};

@@ -17,4 +17,4 @@ function escapeStringChar(match) {
 
 module.exports = function quote(text) {
   return "'" + text.replace(reUnescapedString, escapeStringChar) + "'";
-}
+};

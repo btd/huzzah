@@ -14,4 +14,4 @@ module.exports = function(text) {
   formatCache[text] = result;
   
   return result;
-}
+};

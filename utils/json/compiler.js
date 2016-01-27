@@ -137,7 +137,7 @@ module.exports = function(serializers) {
     '}'
   ].join('\n'));
 
-  write('\n')
+  write('\n');
 
   writeLine(quote('}'));
 
@@ -157,4 +157,4 @@ module.exports = function(serializers) {
   result.source = source;
 
   return result;
-}
+};

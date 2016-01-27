@@ -42,7 +42,7 @@ NullHandler.prototype = {
 
   _handle() {
   }
-}
+};
 
 module.exports.NullHandler = NullHandler;
 
@@ -93,7 +93,7 @@ BaseHandler.prototype.setFormat = function(format) {
     this.formatRecord = format;
   }
   return this;
-}
+};
 
 module.exports.BaseHandler = BaseHandler;
 
@@ -112,7 +112,7 @@ ConsoleHandler.prototype._handle = function(record) {
   } else {
     process.stdout.write(line);
   }
-}
+};
 
 module.exports.ConsoleHandler = ConsoleHandler;
 
@@ -126,14 +126,14 @@ function StreamHandler(stream, shouldFormat) {
 
   this
     .setStream(stream)
-    .setShouldFormat(typeof shouldFormat === 'undefined' ? true: !!shouldFormat)
+    .setShouldFormat(typeof shouldFormat === 'undefined' ? true: !!shouldFormat);
 }
 
 StreamHandler.prototype = Object.create(BaseHandler.prototype);
 StreamHandler.prototype._handle = function(record) {
   var out = this._shouldFormat ? this.formatRecord(record) : record;
   this._stream.write(out);
-}
+};
 
 /**
  * @param  {boolean} value
@@ -142,7 +142,7 @@ StreamHandler.prototype._handle = function(record) {
 StreamHandler.prototype.setShouldFormat = function(value) {
   this._shouldFormat = value;
   return this;
-}
+};
 
 /**
  * @param  {WritableStream} stream
@@ -151,6 +151,6 @@ StreamHandler.prototype.setShouldFormat = function(value) {
 StreamHandler.prototype.setStream = function(stream) {
   this._stream = stream;
   return this;
-}
+};
 
 module.exports.StreamHandler = StreamHandler;

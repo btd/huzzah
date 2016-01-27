@@ -61,11 +61,11 @@ var DECORATOR = {
   'magenta.bold': decorator('1;'+35),
   'cyan.bold': decorator('1;'+36),
   'white.bold': decorator('1;'+37)
-}
+};
 
 var DEFAULT_DATE_FORMAT = '%Y/%m/%d %H:%M:%S,%L';
 
-var LEVEL_DECORATORS = {}
+var LEVEL_DECORATORS = {};
 LEVEL_DECORATORS[LEVELS.ERROR] = DECORATOR['red.bold'];
 LEVEL_DECORATORS[LEVELS.WARN] = DECORATOR['yellow'];
 LEVEL_DECORATORS[LEVELS.INFO] = DECORATOR['blue'];
@@ -209,4 +209,4 @@ module.exports = function compile(onodes) {
   result.source = source;
 
   return result;
-}
+};

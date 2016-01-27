@@ -1,11 +1,11 @@
 function Const(text) {
-  return { type: 'const', v: text }
+  return { type: 'const', v: text };
 }
 function Var(name, pad, trunc, args) {
-  return { type: 'var', name: name, pad: pad, trunc: trunc, args: args }
+  return { type: 'var', name: name, pad: pad, trunc: trunc, args: args };
 }
 function Dec(name, nodes) {
-  return { type: 'decorator', name: name, nodes: nodes || [] }
+  return { type: 'decorator', name: name, nodes: nodes || [] };
 }
 
 var RE = /%(?:([\.a-z]+)\(([^\)]*)\))|%(?:(-?\d+)?(?:.(-?\d+))?([a-z]+|%)(?:\{([^\}]*)\})?)/g;
@@ -41,4 +41,4 @@ module.exports = function parse(format) {
   }
 
   return nodes;
-}
+};

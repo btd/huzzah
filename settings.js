@@ -31,7 +31,7 @@ LoggerSettings.prototype._handle = function(record) {
   this._handlers.forEach(function(handler) {
     handler.handle(record);
   });
-}
+};
 
 /**
  * Adds handler to logger
@@ -41,6 +41,6 @@ LoggerSettings.prototype._handle = function(record) {
 LoggerSettings.prototype.addHandler = function(handler) {
   this._handlers.push(handler);
   return this;
-}
+};
 
 module.exports = LoggerSettings;

@@ -35,4 +35,4 @@ module.exports = function parse(format) {
   }
 
   return nodes;
-}
+};

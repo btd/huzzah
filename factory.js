@@ -66,6 +66,6 @@ LoggerFactory.prototype = {
     this._settings[name] = this._settings[name] || new LoggerSettings();
     return this._settings[name];
   }
-}
+};
 
 module.exports = LoggerFactory;

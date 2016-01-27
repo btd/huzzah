@@ -5,5 +5,5 @@ module.exports = function(serializers) {
   var f = compile(serializers || {});
   return function(record) {
     return f(record) + EOL;
-  }
-}
+  };
+};
