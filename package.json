@@ -4,6 +4,7 @@
   "devDependencies": {
     "benchmark": "^2.0.0",
     "bunyan": "latest",
+    "coveralls": "^2.11.6",
     "documentation": "^3.0.4",
     "eslint": "^1.10.3",
     "intel": "latest",
