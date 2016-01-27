@@ -7,6 +7,8 @@ var compileTimestamp = require('../strftime');
 var spacePadding = new Array(1000).join(' ');
 
 function pad(str, value) {
+  if(str.length >= Math.abs(value)) return str;
+
   var isRight = false;
 
   if(value < 0) {
@@ -23,8 +25,10 @@ function pad(str, value) {
 }
 
 function trunc(str, value) {
+  if(str.length <= Math.abs(value)) return str;
+
   if(value > 0) {// truncate from begining
-    return str.substring(value - 1);
+    return str.substring(str.length - value);
   } else {// truncate from end
     return str.substring(0, -value);
   }
