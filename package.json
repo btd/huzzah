@@ -18,7 +18,7 @@
     "test": "mocha *.spec.js",
     "coverage": "istanbul cover _mocha -- *.spec.js",
     "lint": "eslint --fix *.js utils/**/*.js",
-    "coverage-ci": "istanbul cover _mocha --report lcovonly -- *.spec.js && cat ./coverage/lcov.info | coveralls && rm -rf ./coverage"
+    "coverage-ci": "npm run coverage && cat ./coverage/lcov.info | coveralls"
   },
   "description": "Fastest hierarchical text logger",
   "main": "./index.js",
