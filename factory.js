@@ -16,8 +16,6 @@ function parentNames(name) {
   return names;
 }
 
-var loggersChainCache = {};
-
 /**
  * Handler logger and its settings manipulation
  *
@@ -38,23 +36,23 @@ LoggerFactory.prototype = {
   get: function(name) {
     var logger = this._loggers[name];
     if(!logger) {
-      logger = new Logger(this, name);
-      loggersChainCache[name] = parentNames(name)
+      logger = this._createNewLogger(name);
       this._loggers[name] = logger;
     }
     return logger;
   },
 
-  /**
-   * @private
-   */
-  _processRecord: function(name, record) {
-    loggersChainCache[name].forEach(function(loggerName) {
-      var settings = this._settings[loggerName];
-      if(settings) {
-        settings.handle(record);
-      }
-    }, this);
+  _createNewLogger(name) {
+    var that = this;
+    var chain = parentNames(name);
+    return new Logger(function(record) {
+      chain.forEach(function(loggerName) {
+        var settings = that._settings[loggerName];
+        if(settings) {
+          settings.handle(record);
+        }
+      });
+    }, name);
   },
 
   /**

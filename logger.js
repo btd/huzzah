@@ -12,10 +12,9 @@ var PID = process.pid;
  * @param {Object} context Set of keys, which will be auto-added to each record
  * @class
  */
-function Logger(factory, name, context) {
+function Logger(onLogCallback, name, context) {
+  this._onLogCallback = onLogCallback;
   this._name = name;
-  this._factory = factory;
-
   this._context = context;
 }
 
@@ -43,7 +42,7 @@ Logger.prototype = {
       context: this._context
     };
 
-    this._factory._processRecord(this._name, record);
+    this._onLogCallback(record);
   },
 
   /**
@@ -60,7 +59,7 @@ Logger.prototype = {
       throw new Error('`context` must be an Object instance');
     }
 
-    return new Logger(this._factory, this._name, context);
+    return new Logger(this._onLogCallback, this._name, context);
   }
 };
 

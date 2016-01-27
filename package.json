@@ -8,10 +8,15 @@
     "eslint": "^1.10.3",
     "intel": "latest",
     "log4js": "latest",
+    "mocha": "^2.4.3",
+    "should": "^8.2.1",
     "winston": "latest"
   },
   "scripts": {
-    "api-doc": "documentation index.js -o API.md -f md -g"
+    "api-doc": "documentation index.js -o API.md -f md -g",
+    "test": "mocha *.spec.js",
+    "coverage": "istanbul cover _mocha -- *.spec.js",
+    "lint": "eslint --fix *.js utils/**/*.js"
   },
   "description": "Fastest hierarchical text logger",
   "main": "./index.js",

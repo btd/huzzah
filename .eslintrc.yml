@@ -2,6 +2,7 @@ extends: eslint:recommended
 
 env:
   node: true
+  mocha: true
 
 # enable ECMAScript features
 ecmaFeatures:
@@ -31,3 +32,5 @@ rules:
   callback-return: 0
   no-loop-func: 0
   strict: 0
+  semi: [2, "always"]
+  no-console: 1
