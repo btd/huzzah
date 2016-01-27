@@ -16,7 +16,8 @@
     "api-doc": "documentation index.js -o API.md -f md -g",
     "test": "mocha *.spec.js",
     "coverage": "istanbul cover _mocha -- *.spec.js",
-    "lint": "eslint --fix *.js utils/**/*.js"
+    "lint": "eslint --fix *.js utils/**/*.js",
+    "coverage-ci": "istanbul cover _mocha --report lcovonly -- *.spec.js && cat ./coverage/lcov.info | coveralls.js && rm -rf ./coverage"
   },
   "description": "Fastest hierarchical text logger",
   "main": "./index.js",

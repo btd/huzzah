@@ -1,5 +1,8 @@
 # Huzzah
 
+[![Build Status](https://travis-ci.org/btd/huzzah.svg?branch=master)](https://travis-ci.org/btd/huzzah)
+[![Coverage Status](https://coveralls.io/repos/github/btd/huzzah/badge.svg?branch=master)](https://coveralls.io/github/btd/huzzah?branch=master)
+
 You can finally say - Huzzah!!!
 
 It is the fastest and dead simple hierarchical text logger.
