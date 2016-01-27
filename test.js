@@ -17,7 +17,7 @@ f.settings('a.b')
 f.settings('a')
   .setLevel('WARN')
 
-  .addHandler(new ConsoleHandler().setFormat('[%date000] %highlight(%-5level) %cyan.bold(%logger) - %% %message%n%error'))
+  .addHandler(new ConsoleHandler().setFormat('[%date000] %highlight(%-5level) [%cyan.bold(%20.20logger)] - %% %message %x{a}%n%error'));
 
 logger.trace('Boom');
 logger.error(new Error('boom'));

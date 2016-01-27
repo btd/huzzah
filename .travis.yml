@@ -5,4 +5,4 @@ node_js:
 
 script:
   - npm test
-  - npm coverage-ci
+  - npm run coverage-ci
