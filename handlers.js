@@ -72,6 +72,7 @@ BaseHandler.prototype = Object.create(NullHandler.prototype);
  * - `%%` - output %
  * - `%n` - output EOL
  * - `%err` or `%error` - output stack trace of passed error
+ * - `%x` or `%x{field}` - output JSON.stringified value of context field
  *
  * Also available text decorators (now only colors):
  * - `%highlight(text)` - will decorate passed text with record level decorator
