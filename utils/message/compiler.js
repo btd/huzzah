@@ -34,31 +34,8 @@ function trunc(str, value) {
   }
 }
 
-
-var MAX_TRACE_LENGTH = 1e10;
-
-function formatError(err, depth) {
-  switch(depth){
-    case 'full':
-      depth = MAX_TRACE_LENGTH;
-      break;
-
-    case 'short':
-      depth = 1;
-      break;
-
-    default:
-      if(typeof(depth) !== 'number') {
-        depth = MAX_TRACE_LENGTH;
-      }
-  }
-  var trace = err.stack.substr(err.stack.indexOf('\n') + 1).split('\n');
-  var out = '  ' + err.name + ': ' + err.message + EOL;
-
-  for(var i = 0, len = Math.min(trace.length, depth); i < len; i++) {
-    out += trace[i] + EOL;
-  }
-  return out;
+function formatError(err) {
+  return '  ' + err.stack + EOL;
 }
 
 function decorator(code) {
