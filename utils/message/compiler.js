@@ -1,6 +1,7 @@
 var EOL = require('os').EOL;
 var quote = require('../quote');
 var LEVELS = require('../../levels');
+var stringify = require('../safe-json-stringify');
 
 var compileTimestamp = require('../strftime');
 
@@ -75,8 +76,8 @@ LEVEL_DECORATORS[LEVELS.TRACE] = ['',''];
 module.exports = function compile(onodes) {
   var source = "";
   var dateFormats = [];
-  var argumentKeys = ['trunc', 'pad', 'formatError', 'LEVEL_DECORATORS'];
-  var argumentValues = [trunc, pad, formatError, LEVEL_DECORATORS];
+  var argumentKeys = ['trunc', 'pad', 'formatError', 'LEVEL_DECORATORS', 'stringify'];
+  var argumentValues = [trunc, pad, formatError, LEVEL_DECORATORS, stringify];
 
   function writeLine(code) {
     source += '__p += ' + code + ';\n';
@@ -88,6 +89,8 @@ module.exports = function compile(onodes) {
 
   function processNodes(nodes) {
     nodes.forEach(function(node) {
+      var _name;
+
       switch(node.type) {
         case 'const':
           return writeLine(quote(node.v));
@@ -136,10 +139,19 @@ module.exports = function compile(onodes) {
 
             case 'd':
             case 'date':
-              var _name = 'dateFormat' + dateFormats.length;
+              _name = 'dateFormat' + dateFormats.length;
               argumentKeys.push(_name);
               dateFormats.push(compileTimestamp(node.args || DEFAULT_DATE_FORMAT));
               write("__" + _name + "(rec.timestamp)");
+              break;
+
+            case 'x':
+              _name = 'rec.context';
+              if(node.args) {
+                _name += '[' + quote(node.args) + ']';
+              }
+              write('(rec.context ? __stringify(' + _name + '): "")');
+
               break;
 
             default:
