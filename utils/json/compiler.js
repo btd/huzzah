@@ -62,7 +62,7 @@ var RECORD_MAPPING = {
   timestamp: processDate,
   err: undefined,
   message: processString,
-  __hasAdditionalFields: undefined
+  context: undefined
 };
 
 var RECORD_FIELDS = Object.keys(RECORD_MAPPING)
@@ -73,8 +73,8 @@ var RECORD_FIELDS = Object.keys(RECORD_MAPPING)
 
 module.exports = function(serializers) {
   var source = '';
-  var argumentKeys = ['quote', 'stringify', 'ser', 'RECORD_FIELDS'];
-  var argumentValues = [quote, stringify, serializers, RECORD_FIELDS];
+  var argumentKeys = ['res', 'quote', 'stringify', 'ser', 'RECORD_FIELDS'];
+  var argumentValues = [null, quote, stringify, serializers, RECORD_FIELDS];
 
   function writeLine(code) {
     source += '__p += ' + code + ';\n';
@@ -87,50 +87,54 @@ module.exports = function(serializers) {
   writeLine(quote('{'));
 
   var defaultProperties = [];
-  var hasStandardPropertySerializer = false;
+  var defaultSerializableProperties = [];
 
   Object.keys(RECORD_MAPPING).forEach(function(name) {
     if(serializers[name]) {
-      hasStandardPropertySerializer = true;
+      defaultSerializableProperties.push([
+        '__res = __ser.' + name + '(rec.' + name + ');',
+        'if(__res !== undefined) {',
+          '__p += "," + ' + quote(quote(name)) + ' + ":" + __stringify(__res);',
+        '}'
+      ].join('\n'));
       return;
     }
 
     if(RECORD_MAPPING[name] !== undefined) {
       defaultProperties.push(
-        '__p += ' +
-        quote(quote(name)) +
-        ' + ' +
-        quote(':') +
-        ' + ' +
-        RECORD_MAPPING[name]('rec.' + name) +
-        ';\n'
+        '__p += ' + quote(quote(name)) + ' + ":" + ' + RECORD_MAPPING[name]('rec.' + name) + ';'
       );
     }
   });
 
-  write(defaultProperties.join('__p += ",";\n'));
+  write(defaultProperties.join('\n__p += ",";\n') + '\n');
 
   if(!serializers.err) {
-    write('if(rec.err) {\n__p += "," + ' + processError('rec.err') + '\n}\n');
+    write('if(rec.err) {\n__p += "," + ' + quote(quote('err')) + ' + ":" + ' + processError('rec.err') + '\n}\n');
   }
 
+  write(defaultSerializableProperties.join('\n') + '\n');
+
   write([
-    hasStandardPropertySerializer ? '': 'if(rec.__hasAdditionalFields) {',
-      'for(var name in rec) {',
-        'var value = rec[name];',
+    'if(rec.context) {',
+      '__p += ",\\\"context\\\":{"',
+      '__res = []',
+      'for(var name in rec.context) {',
+        'var value = rec.context[name];',
         'if(value === undefined) continue;',
 
         'if(name in __ser) {',
           'var res = __ser[name](value);',
           'if(value === undefined) continue;',
 
-          '__p += "," + __quote(name) + ":" + __stringify(res)',
-        '} else if (name in __RECORD_FIELDS) {',
+          '__res.push(__quote(name) + ":" + __stringify(res));',
         '} else {',
-          '__p += "," + __quote(name) + ":" + __stringify(value);',
+          '__res.push(__quote(name) + ":" + __stringify(value));',
         '}',
       '}',
-    hasStandardPropertySerializer ? '': '}'
+      '__p += __res.join(",");',
+      '__p += "}"',
+    '}'
   ].join('\n'));
 
   write('\n')
