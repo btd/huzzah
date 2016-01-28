@@ -30,12 +30,12 @@ NullHandler.prototype = {
     return this;
   },
 
-  enabledFor: function(level) {
+  _enabledFor: function(level) {
     return this._level <= level;
   },
 
   handle: function(record) {
-    if(this.enabledFor(record.level)) {
+    if(this._enabledFor(record.level)) {
       this._handle(record);
     }
   },
@@ -87,10 +87,16 @@ BaseHandler.prototype = Object.create(NullHandler.prototype);
  * @return {this}
  */
 BaseHandler.prototype.setFormat = function(format) {
-  if(typeof format === 'string') {
-    this.formatRecord = compileFormat(format);
-  } else if(typeof format === 'function') {
-    this.formatRecord = format;
+  switch (typeof format) {
+    case 'string':
+      this.formatRecord = compileFormat(format);
+      break;
+
+    case 'function':
+      this.formatRecord = format;
+      break;
+    default:
+      throw new Error('`format` can be function or string');
   }
   return this;
 };
@@ -121,12 +127,10 @@ module.exports.ConsoleHandler = ConsoleHandler;
  * @param {WritableStream} stream Stream to write
  * @param {boolean} shouldFormat Should we format string to be text lines instead of objects
  */
-function StreamHandler(stream, shouldFormat) {
+function StreamHandler() {
   BaseHandler.call(this);
 
-  this
-    .setStream(stream)
-    .setShouldFormat(typeof shouldFormat === 'undefined' ? true: !!shouldFormat);
+  this.setShouldFormat(true);
 }
 
 StreamHandler.prototype = Object.create(BaseHandler.prototype);

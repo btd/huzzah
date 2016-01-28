@@ -3,7 +3,7 @@
  * ALL < TRACE < DEBUG < INFO < WARN < ERROR < OFF
  * @type {Object}
  */
-const LEVELS = {
+var LEVELS = {
   ALL: 0,
   TRACE: 10,
   DEBUG: 20,
