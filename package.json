@@ -16,8 +16,8 @@
   },
   "scripts": {
     "api-doc": "documentation index.js -o API.md -f md -g",
-    "test": "mocha *.spec.js",
-    "coverage": "istanbul cover _mocha -- *.spec.js",
+    "test": "mocha *.spec.js utils/**/*.spec.js",
+    "coverage": "istanbul cover _mocha -- *.spec.js utils/**/*.spec.js",
     "lint": "eslint --fix *.js utils/**/*.js",
     "upload-coveralls": "cat ./coverage/lcov.info | coveralls",
     "coveralls": "npm run coverage && npm run upload-coveralls"
