@@ -45,13 +45,14 @@ LoggerFactory.prototype = {
   _createNewLogger(name) {
     var that = this;
     var chain = parentNames(name);
+    var chainLength = chain.length;
     return new Logger(function(record) {
-      chain.forEach(function(loggerName) {
-        var settings = that._settings[loggerName];
+      for(var i = 0; i < chainLength; i++) {
+        var settings = that._settings[chain[i]];
         if(settings) {
           settings.handle(record);
         }
-      });
+      }
     }, name);
   },
 

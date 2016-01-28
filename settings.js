@@ -28,9 +28,9 @@ function LoggerSettings() {
 
 LoggerSettings.prototype = Object.create(NullHandler.prototype);
 LoggerSettings.prototype._handle = function(record) {
-  this._handlers.forEach(function(handler) {
-    handler.handle(record);
-  });
+  for(var i = 0, len = this._handlers.length; i < len; i++) {
+    this._handlers[i].handle(record);
+  }
 };
 
 /**
