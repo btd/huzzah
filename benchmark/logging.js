@@ -22,11 +22,11 @@ stdout.write = function (out, encoding, cb) {
 var f = new LoggerFactory();
 var l1 = f.get('a');
 f.settings('a')
-  .addHandler(new StreamHandler(stdout).setFormat('[%date] %logger:: %message%n'));
+  .addHandler(new StreamHandler().setStream(stdout).setFormat('[%date] %logger:: %message%n'));
 
 var l2 = f.get('b');
 f.settings('b')
-  .addHandler(new StreamHandler(stdout).setFormat(jsonFormat({})));
+  .addHandler(new StreamHandler().setStream(stdout).setFormat(jsonFormat({})));
 
 intel.addHandler(new intel.handlers.Stream({ stream: stdout, formatter: new intel.Formatter('[%(date)s] %(name)s:: %(message)s') }));
 
@@ -40,7 +40,7 @@ process.stdout.write = function(msg, enc, callback) {
 
   callback && callback();
   return true;
-}
+};
 
 var Benchmark = require('benchmark');
 
@@ -64,7 +64,7 @@ suite
   })
   .add('log4js.info', function() {
     log4js.info('asdf');
-  })
+  });
 
 suite
 // add listeners

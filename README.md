@@ -13,12 +13,12 @@ Let step by step explain what does it mean.
 
 ```
 $ node benchmark/logging.js
-huzzah.info text format x 838,371 ops/sec ±0.74% (89 runs sampled)
-huzzah.info json format x 310,377 ops/sec ±0.81% (90 runs sampled)
-winston.info x 38,401 ops/sec ±2.86% (81 runs sampled)
-intel.info x 105,450 ops/sec ±0.65% (88 runs sampled)
-bunyan.info x 80,865 ops/sec ±0.35% (89 runs sampled)
-log4js.info x 46,854 ops/sec ±1.11% (87 runs sampled)
+huzzah.info text format x 737,659 ops/sec ±1.60% (85 runs sampled)
+huzzah.info json format x 328,793 ops/sec ±1.57% (87 runs sampled)
+winston.info x 38,781 ops/sec ±3.48% (79 runs sampled)
+intel.info x 105,590 ops/sec ±1.05% (84 runs sampled)
+bunyan.info x 77,826 ops/sec ±1.30% (86 runs sampled)
+log4js.info x 45,835 ops/sec ±1.67% (83 runs sampled)
 ```
 
 ## Dead simple
