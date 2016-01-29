@@ -5,7 +5,7 @@
     "benchmark": "^2.0.0",
     "bunyan": "latest",
     "coveralls": "^2.11.6",
-    "documentation": "^3.0.4",
+    "documentation": "^4.0.0-beta",
     "eslint": "^1.10.3",
     "intel": "latest",
     "istanbul": "^0.4.2",
@@ -15,7 +15,7 @@
     "winston": "latest"
   },
   "scripts": {
-    "api-doc": "documentation index.js -o API.md -f md -g",
+    "api-doc": "documentation build index.js -o API.md -f md -g",
     "test": "mocha *.spec.js utils/**/*.spec.js",
     "coverage": "istanbul cover _mocha -- *.spec.js utils/**/*.spec.js",
     "lint": "eslint --fix *.js utils/**/*.js",

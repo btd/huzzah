@@ -83,6 +83,9 @@ BaseHandler.prototype = Object.create(NullHandler.prototype);
  *
  * Example: `%date000 %highlight(%5level) %cyan(%logger) - %message%n%error`
  *
+ * Also it is possible to set it to function. One of possible examples jsonFormat (`require('huzzah/json-format')` ).
+ * It can accept the same serializers bunyan can accept and you will have json output at the end.
+ *
  * @param  {string|function} format - It is either formatted string as described, or function returning string and accepts just one argument log record
  * @return {this}
  */
@@ -123,9 +126,7 @@ ConsoleHandler.prototype._handle = function(record) {
 module.exports.ConsoleHandler = ConsoleHandler;
 
 /**
- * Allow to pass records
- * @param {WritableStream} stream Stream to write
- * @param {boolean} shouldFormat Should we format string to be text lines instead of objects
+ * Allow to pass records to stream
  */
 function StreamHandler() {
   BaseHandler.call(this);
@@ -140,6 +141,7 @@ StreamHandler.prototype._handle = function(record) {
 };
 
 /**
+ * Should we format record before passing to stream? By default it is true
  * @param  {boolean} value
  * @return {this}
  */
@@ -149,6 +151,7 @@ StreamHandler.prototype.setShouldFormat = function(value) {
 };
 
 /**
+ * Stream to pass records
  * @param  {WritableStream} stream
  * @return {this}
  */
