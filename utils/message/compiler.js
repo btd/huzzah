@@ -134,7 +134,7 @@ module.exports = function compile(onodes) {
 
             case 'err':
             case 'error':
-              write('(rec.err ? __formatError(rec.err, ' + (node.args ? quote(node.args) : 'null')  + '): "")');
+              write('(rec.err ? __formatError(rec.err): "")');
               break;
 
             case 'd':
