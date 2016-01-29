@@ -1,3 +1,4 @@
+var quote = require('./quote');
 var compileMessage = require('./message');
 require('should');
 
@@ -52,19 +53,22 @@ var testCases = [
   ['[%-20.20logger]', '[logger_name         ]'],
 
   ['[%10.10logger]', '[ogger_name]'],
-  ['[%10.-10logger]', '[logger_nam]']
+  ['[%10.-10logger]', '[logger_nam]'],
+
+  [' %logger %msg ', ' logger_name text message ']
 ];
 
 
-
-testCases.forEach(function(testCase) {
-  it('should match ' + testCase[0] + ' and ' + testCase[1], function() {
-    compileMessage(testCase[0])(rec).should.be.equal(String(testCase[1]));
+describe('Patter Layout', function() {
+  testCases.forEach(function(testCase) {
+    it('should match ' + quote(testCase[0]) + ' to ' + quote(String(testCase[1])), function() {
+      compileMessage(testCase[0])(rec).should.be.equal(String(testCase[1]));
+    });
   });
-});
 
-it('should throw when used not variable that does not exist', function() {
-  (function() {
-    compileMessage('%e');
-  }).should.throw();
+  it('should throw when used not variable that does not exist', function() {
+    (function() {
+      compileMessage('%e');
+    }).should.throw();
+  });
 });

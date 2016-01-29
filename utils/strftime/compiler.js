@@ -197,10 +197,6 @@ module.exports = function compile(nodes, locale, compileFormatter) {
               write('__'+preCompileFormat(locale.formats.T)+'(d)');
               break;
 
-            case 't':
-              write("'\\t'");
-              break;
-
             case 'U':
               write('__pad2(__weekNumber(d, "sunday"), "' + padding + '")');
               break;
@@ -234,7 +230,7 @@ module.exports = function compile(nodes, locale, compileFormatter) {
               break;
 
             case 'y':
-              write('String(d.getFullYear() % 100)');
+            write('__pad2(d.getFullYear() % 100, "' + padding + '")');
               break;
 
             case 'Z':
