@@ -90,13 +90,15 @@ module.exports = function(serializers) {
   var defaultSerializableProperties = [];
 
   Object.keys(RECORD_MAPPING).forEach(function(name) {
-    if(serializers[name]) {
-      defaultSerializableProperties.push([
-        '__res = __ser.' + name + '(rec.' + name + ');',
-        'if(__res !== undefined) {',
-          '__p += "," + ' + quote(quote(name)) + ' + ":" + __stringify(__res);',
-        '}'
-      ].join('\n'));
+    if(name in serializers) {
+      if(typeof serializers[name] === 'function') {
+        defaultSerializableProperties.push([
+          '__res = __ser.' + name + '(rec.' + name + ');',
+          'if(__res !== undefined) {',
+            '__p += "," + ' + quote(quote(name)) + ' + ":" + __stringify(__res);',
+          '}'
+        ].join('\n'));
+      }
       return;
     }
 
@@ -115,27 +117,29 @@ module.exports = function(serializers) {
 
   write(defaultSerializableProperties.join('\n') + '\n');
 
-  write([
-    'if(rec.context) {',
-      '__p += ",\\\"context\\\":{"',
-      '__res = []',
-      'for(var name in rec.context) {',
-        'var value = rec.context[name];',
-        'if(value === undefined) continue;',
-
-        'if(name in __ser) {',
-          'var res = __ser[name](value);',
+  if(typeof serializers.context !== 'function') {
+    write([
+      'if(rec.context) {',
+        '__p += ",\\\"context\\\":{"',
+        '__res = []',
+        'for(var name in rec.context) {',
+          'var value = rec.context[name];',
           'if(value === undefined) continue;',
 
-          '__res.push(__quote(name) + ":" + __stringify(res));',
-        '} else {',
-          '__res.push(__quote(name) + ":" + __stringify(value));',
+          'if(__ser.context && name in __ser.context) {',
+            'var res = __ser.context[name](value);',
+            'if(value === undefined) continue;',
+
+            '__res.push(__quote(name) + ":" + __stringify(res));',
+          '} else {',
+            '__res.push(__quote(name) + ":" + __stringify(value));',
+          '}',
         '}',
-      '}',
-      '__p += __res.join(",");',
-      '__p += "}"',
-    '}'
-  ].join('\n'));
+        '__p += __res.join(",");',
+        '__p += "}"',
+      '}'
+    ].join('\n'));
+  }
 
   write('\n');
 
