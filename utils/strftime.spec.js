@@ -64,7 +64,8 @@ var testCases = [
   ['%-S', '19', '9'],
   ['%_S', '19', ' 9'],
 
-  ['%s', '1454047459', '1254996849'],
+  // XXX it is env specific, find better way
+  //['%s', '1454047459', '1254996849'],
 
   ['%U', '04', '40'],
   ['%-U', '4', '40'],
@@ -82,8 +83,8 @@ var testCases = [
 
   ['%y', '16', '09']
 
+  // XXX it is env specific, find better way
   //['%z', '+0400', '+0400'],
-
   //['%Z', 'MSK', 'MSD'],
 ];
 
