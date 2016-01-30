@@ -12,6 +12,7 @@
     "log4js": "latest",
     "mocha": "^2.4.3",
     "should": "^8.2.1",
+    "sinon": "^1.17.3",
     "winston": "latest"
   },
   "scripts": {

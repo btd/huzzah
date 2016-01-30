@@ -1,5 +1,6 @@
 var LoggerFactory = require('./factory');
 var should = require('should');
+var sinon = require('sinon');
 
 describe('LoggerFactory', function() {
   describe('#settings', function() {
@@ -36,5 +37,18 @@ describe('LoggerFactory', function() {
       s1.should.equal(s2);
       s1.should.not.be.equal(s3);
     });
+  });
+
+  it('bind logger callback to settings handle', function() {
+    var f = new LoggerFactory();
+
+    var s = f.settings('a');
+    s.handle = sinon.spy();
+
+    var l = f.get('a');
+
+    l.trace();
+
+    s.handle.called.should.be.true();
   });
 });

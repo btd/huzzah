@@ -1,23 +1,23 @@
 var should = require('should');
 var Logger = require('./logger');
 var LEVELS = require('./levels');
+var sinon = require('sinon');
 
 describe('Logger', function() {
 
   describe('#log', function() {
 
     it('call callback function when call .log with record', function() {
-      var called = false;
-      var logger = new Logger(function(record) {
-        called = true;
-
-        should.exist(record);
-        record.should.be.an.Object().and.be.not.empty();
-      });
+      var spy = sinon.spy();
+      var logger = new Logger(spy);
 
       logger.log(LEVELS.OFF, []);
 
-      called.should.be.true();
+      spy.called.should.be.true();
+      var record = spy.args[0][0];
+
+      should.exist(record);
+      record.should.be.an.Object().and.be.not.empty();
     });
 
     it('call callback function with record containing logger name', function() {
