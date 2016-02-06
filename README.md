@@ -15,12 +15,12 @@ Let step by step explain what does it mean.
 
 ```
 $ node benchmark/logging.js
-huzzah.info text format x 737,659 ops/sec ±1.60% (85 runs sampled)
-huzzah.info json format x 328,793 ops/sec ±1.57% (87 runs sampled)
-winston.info x 38,781 ops/sec ±3.48% (79 runs sampled)
-intel.info x 105,590 ops/sec ±1.05% (84 runs sampled)
-bunyan.info x 77,826 ops/sec ±1.30% (86 runs sampled)
-log4js.info x 45,835 ops/sec ±1.67% (83 runs sampled)
+huzzah.info text format x 856,021 ops/sec ±0.46% (89 runs sampled)
+huzzah.info json format x 336,543 ops/sec ±1.34% (87 runs sampled)
+winston.info x 38,553 ops/sec ±2.99% (79 runs sampled)
+intel.info x 106,594 ops/sec ±0.48% (87 runs sampled)
+bunyan.info x 79,778 ops/sec ±0.31% (90 runs sampled)
+log4js.info x 49,651 ops/sec ±0.41% (86 runs sampled)
 ```
 
 ## Dead simple
