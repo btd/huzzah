@@ -27,7 +27,12 @@ module.exports = function parse(format) {
       if(varName === '%') {
         nodes.push(Const('%'));
       } else {
-        nodes.push(Var(varName, varPad && parseInt(varPad, 10), varTrunc && parseInt(varTrunc, 10), varArgs));
+        nodes.push(Var(
+          varName,
+          varPad && parseInt(varPad, 10),
+          varTrunc && parseInt(varTrunc, 10),
+          typeof varArgs == 'string' ? varArgs.split('|'): []
+        ));
       }
     }
 

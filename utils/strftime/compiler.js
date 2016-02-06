@@ -21,12 +21,12 @@ function pad2(n, padding) {
 }
 
 
-function weekNumber(d, firstWeekday) {
+function weekNumber(d, firstWeekday, tz) {
   firstWeekday = firstWeekday || 'sunday';
 
   // This works by shifting the weekday back by one day if we
   // are treating Monday as the first day of the week.
-  var wday = d.getDay();
+  var wday = d['get' + tz + 'Day']();
   if (firstWeekday === 'monday') {
     if (wday === 0) {// Sunday
       wday = 6;
@@ -34,14 +34,14 @@ function weekNumber(d, firstWeekday) {
       wday--;
     }
   }
-  var firstDayOfYear = new Date(d.getFullYear(), 0, 1),
+  var firstDayOfYear = new Date(d['get' + tz + 'FullYear'](), 0, 1),
     yday = (d - firstDayOfYear) / 86400000,
     weekNum = (yday + 7 - wday) / 7;
   return Math.floor(weekNum);
 }
 
-function hours12(d) {
-  var hour = d.getHours();
+function hours12(d, tz) {
+  var hour = d['get' + tz + 'Hours']();
   if (hour === 0) {
     hour = 12;
   } else if (hour > 12) {
@@ -52,7 +52,8 @@ function hours12(d) {
 
 var timestampIndex = 0;
 
-module.exports = function compile(nodes, locale, compileFormatter) {
+module.exports = function compile(nodes, locale, compileFormatter, _tz) {
+  var tz = _tz === 'UTC' ? _tz : '';
   var source = "";
   var dateFormats = [];
   var argumentKeys = ['l', 'pad2', 'padZero3', 'hours12', 'weekNumber'];
@@ -88,19 +89,19 @@ module.exports = function compile(nodes, locale, compileFormatter) {
 
           switch(node.name) {
             case 'A': //Full weekday name *
-              write('__l.days[d.getDay()]');
+              write('__l.days[d.get' + tz + 'Day()]');
               break;
 
             case 'a': //Abbreviated weekday name *
-              write('__l.shortDays[d.getDay()]');
+              write('__l.shortDays[d.get' + tz + 'Day()]');
               break;
 
             case 'B': //Full month name *
-              write('__l.months[d.getMonth()]');
+              write('__l.months[d.get' + tz + 'Month()]');
               break;
 
             case 'b': //Abbreviated month name *
-              write('__l.shortMonths[d.getMonth()]');
+              write('__l.shortMonths[d.get' + tz + 'Month()]');
               break;
 
             case 'c': //Date and time representation *
@@ -108,7 +109,7 @@ module.exports = function compile(nodes, locale, compileFormatter) {
               break;
 
             case 'C': //Year divided by 100 and truncated to integer (00-99)
-              write('__pad2(Math.floor(d.getFullYear() / 100), "' + padding + '")');
+              write('__pad2(Math.floor(d.get' + tz + 'FullYear() / 100), "' + padding + '")');
               break;
 
             case 'D':
@@ -116,11 +117,11 @@ module.exports = function compile(nodes, locale, compileFormatter) {
               break;
 
             case 'd': //Day of the month, zero-padded (01-31)
-              write('__pad2(d.getDate(), "' + padding + '")');
+              write('__pad2(d.get' + tz + 'Date(), "' + padding + '")');
               break;
 
             case 'e': // Day of the month, space-padded ( 1-31)
-              write('__pad2(d.getDate(), " ")');
+              write('__pad2(d.get' + tz + 'Date(), " ")');
               break;
 
             case 'F':
@@ -128,53 +129,52 @@ module.exports = function compile(nodes, locale, compileFormatter) {
               break;
 
             case 'H': //Hour in 24h format (00-23)
-              write('__pad2(d.getHours(), "' + padding + '")');
+              write('__pad2(d.get' + tz + 'Hours(), "' + padding + '")');
               break;
 
             case 'h': //Abbreviated month name * (same as %b)
-              write('__l.shortMonths[d.getMonth()]');
+              write('__l.shortMonths[d.get' + tz + 'Month()]');
               break;
 
             case 'I': //Hour in 12h format (01-12)
-              write('__pad2(__hours12(d), "' + padding + '")');
+              write('__pad2(__hours12(d, ' + quote(tz) + '), "' + padding + '")');
               break;
 
             case 'j': //Day of the year (001-366)
               write('__padZero3(Math.ceil((d.getTime() ' +
-                '- (new Date(d.getFullYear(), 0, 1)).getTime()) / (1000*60*60*24)))');
+                '- (new Date(d.get' + tz + 'FullYear(), 0, 1)).getTime()) / (1000*60*60*24)))');
               break;
 
             case 'k':
-              write('__pad2(d.getHours(), "' + padding + '")');
+              write('__pad2(d.get' + tz + 'Hours(), "' + padding + '")');
               break;
 
             case 'L':
-              write('__padZero3(Math.floor(d.getTime() % 1000))');
+              write('__padZero3(d.get' + tz + 'Milliseconds())');
               break;
 
             case 'l':
-              write('__pad2(__hours12(d), "' + padding + '")');
+              write('__pad2(__hours12(d, ' + quote(tz) + '), "' + padding + '")');
               break;
 
             case 'M':
-              write('__pad2(d.getMinutes(), "' + padding + '")');
+              write('__pad2(d.get' + tz + 'Minutes(), "' + padding + '")');
               break;
 
             case 'm':
-              write('__pad2(d.getMonth() + 1, "' + padding + '")');
+              write('__pad2(d.get' + tz + 'Month() + 1, "' + padding + '")');
               break;
 
             case 'n':
               write(quote(EOL));
               break;
 
-            //case 'o': return String(d.getDate()) + ordinal(d.getDate());
             case 'P':
-              write('(d.getHours() < 12 ? __l.am : __l.pm)');
+              write('(d.get' + tz + 'Hours() < 12 ? __l.am : __l.pm)');
               break;
 
             case 'p':
-              write('(d.getHours() < 12 ? __l.AM : __l.PM)');
+              write('(d.get' + tz + 'Hours() < 12 ? __l.AM : __l.PM)');
               break;
 
             case 'R':
@@ -186,7 +186,7 @@ module.exports = function compile(nodes, locale, compileFormatter) {
               break;
 
             case 'S':
-              write('__pad2(d.getSeconds(), "' + padding + '")');
+              write('__pad2(d.get' + tz + 'Seconds(), "' + padding + '")');
               break;
 
             case 's':
@@ -198,11 +198,11 @@ module.exports = function compile(nodes, locale, compileFormatter) {
               break;
 
             case 'U':
-              write('__pad2(__weekNumber(d, "sunday"), "' + padding + '")');
+              write('__pad2(__weekNumber(d, "sunday", ' + quote(tz) + '), "' + padding + '")');
               break;
 
             case 'u': // 1 - 7, Monday is first day of the week
-              write('((__d = d.getDay()) === 0 ? 7 : __d)');
+              write('((__d = d.get' + tz + 'Day()) === 0 ? 7 : __d)');
               break;
 
             case 'v':
@@ -210,11 +210,11 @@ module.exports = function compile(nodes, locale, compileFormatter) {
               break;
 
             case 'W':
-              write('__pad2(__weekNumber(d, "monday"), "' + padding + '")');
+              write('__pad2(__weekNumber(d, "monday", ' + quote(tz) + '), "' + padding + '")');
               break;
 
             case 'w':
-              write('d.getDay()'); // 0 - 6, Sunday is first day of the week
+              write('d.get' + tz + 'Day()'); // 0 - 6, Sunday is first day of the week
               break;
 
             case 'X':
@@ -226,11 +226,11 @@ module.exports = function compile(nodes, locale, compileFormatter) {
               break;
 
             case 'Y':
-              write('d.getFullYear()');
+              write('d.get' + tz + 'FullYear()');
               break;
 
             case 'y':
-            write('__pad2(d.getFullYear() % 100, "' + padding + '")');
+            write('__pad2(d.get' + tz + 'FullYear() % 100, "' + padding + '")');
               break;
 
             case 'Z':

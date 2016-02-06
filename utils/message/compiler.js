@@ -36,7 +36,12 @@ function trunc(str, value) {
 }
 
 function formatError(err) {
-  return '  ' + err.stack + EOL;
+  var parts = err.stack ? err.stack.split('\n') : [];
+  var res = '';
+  for(var i = 0, l = parts.length; i < l; i++) {
+    res += '  ' + parts[i] + EOL;
+  }
+  return res;
 }
 
 function decorator(code) {
@@ -141,14 +146,15 @@ module.exports = function compile(onodes) {
             case 'date':
               _name = 'dateFormat' + dateFormats.length;
               argumentKeys.push(_name);
-              dateFormats.push(compileTimestamp(node.args || DEFAULT_DATE_FORMAT));
+
+              dateFormats.push(compileTimestamp(node.args[0] || DEFAULT_DATE_FORMAT, node.args[1]));
               write("__" + _name + "(rec.timestamp)");
               break;
 
             case 'x':
               _name = 'rec.context';
-              if(node.args) {
-                _name += '[' + quote(node.args) + ']';
+              if(node.args.length) {
+                _name += '[' + quote(node.args[0]) + ']';
               }
               write('(rec.context ? __stringify(' + _name + '): "")');
 

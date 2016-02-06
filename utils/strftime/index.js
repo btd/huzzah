@@ -3,15 +3,16 @@ var compile = require('./compiler');
 
 var formatCache = {};
 
-function createFormatFunction(text) {
-  if(formatCache[text]) {
-    return formatCache[text];
+function createFormatFunction(text, tz) {
+  var key = text + '|' + (tz || '');
+  if(formatCache[key]) {
+    return formatCache[key];
   }
 
   var nodes = parse(text);
-  var result = compile(nodes, createFormatFunction.locale, createFormatFunction);
+  var result = compile(nodes, createFormatFunction.locale, createFormatFunction, tz);
 
-  formatCache[text] = result;
+  formatCache[key] = result;
 
   return result;
 }

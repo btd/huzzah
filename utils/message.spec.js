@@ -18,6 +18,8 @@ var rec = {
   }
 };
 
+
+
 var testCases = [
   ['test', 'test'],
 
@@ -35,8 +37,8 @@ var testCases = [
   ['%msg', rec.message],
   ['%message', rec.message],
 
-  ['%err', '  ' + rec.err.stack + '\n'],
-  ['%error', '  ' + rec.err.stack + '\n'],
+  ['%err', rec.err.stack.split('\n').map(function(line) { return '  ' + line; }).join('\n') + '\n'],
+  ['%error', rec.err.stack.split('\n').map(function(line) { return '  ' + line; }).join('\n') + '\n'],
 
   // XXX it is env specific, find better way
   //['%d', '2016/01/29 12:04:19,720'],
