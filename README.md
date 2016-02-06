@@ -39,8 +39,8 @@ But we still need some configuration what and where to output:
 var ConsoleHandler = require('huzzah/handlers').ConsoleHandler;
 
 require('huzzah')
-.settings('root')// see hierarchical section about what root mean
-.addHandler(new ConsoleHandler())
+  .settings('root')// see hierarchical section about what root mean
+  .addHandler(new ConsoleHandler())
 ```
 
 With code above all your loggers will output to console.
@@ -70,7 +70,7 @@ That means you can configure some loggers and all nested loggers will reuse thie
 		// let add console handler
 		.addHandler(new ConsoleHandler())
 		// let add output to file
-		.addHandler(new StreamHandler(fs.createWriteStream('debug.log')))
+		.addHandler(new StreamHandler().setStream(fs.createWriteStream('debug.log')))
 
 	```
 
@@ -111,5 +111,5 @@ That means you can configure some loggers and all nested loggers will reuse thie
 4. I want to add more fields to record (for JSON output)
 
 	```js
-	logger.with({ req: req, res: res }).info('Some message');
+	logger.with({ req, res }).info('Some message');
 	```
