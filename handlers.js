@@ -126,6 +126,29 @@ ConsoleHandler.prototype._handle = function(record) {
 module.exports.ConsoleHandler = ConsoleHandler;
 
 /**
+ * Like ConsoleHandler but output whole record to console. This can be usefull
+ * in browser to see inspections.
+ */
+function RawConsoleHandler() {
+  BaseHandler.call(this);
+}
+
+RawConsoleHandler.prototype = Object.create(BaseHandler.prototype);
+RawConsoleHandler.prototype._handle = function(record) {
+  if(record.level < LEVELS.INFO) {
+    console.log(record);
+  } else if (record.level < LEVELS.WARN) {
+    console.info(record);
+  } else if (record.level < LEVELS.ERROR) {
+    console.warn(record);
+  } else {
+    console.error(record);
+  }
+};
+
+module.exports.RawConsoleHandler = RawConsoleHandler;
+
+/**
  * Allow to pass records to stream
  */
 function StreamHandler() {
