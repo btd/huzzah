@@ -13,7 +13,7 @@ var LEVELS = {
   OFF: 60
 };
 
-Object.keys(LEVELS).forEach(l => {
+Object.keys(LEVELS).forEach(function(l) {
   LEVELS[LEVELS[l]] = l;
 });
 

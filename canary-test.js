@@ -1,7 +1,7 @@
 var LoggerFactory = require('./factory');
 var ConsoleHandler = require('./handlers').ConsoleHandler;
 
-const strftimeCompile = require('./utils/strftime');
+var strftimeCompile = require('./utils/strftime');
 
 var jsonFormat = require('./json-format');
 

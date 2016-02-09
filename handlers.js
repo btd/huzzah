@@ -40,7 +40,7 @@ NullHandler.prototype = {
     }
   },
 
-  _handle() {
+  _handle: function() {
   }
 };
 

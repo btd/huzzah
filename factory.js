@@ -42,7 +42,7 @@ LoggerFactory.prototype = {
     return logger;
   },
 
-  _createNewLogger(name) {
+  _createNewLogger: function(name) {
     var that = this;
     var chain = parentNames(name);
     var chainLength = chain.length;
