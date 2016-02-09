@@ -1,7 +1,7 @@
 var printf = require('./utils/printf');
 var LEVELS = require('./levels');
 
-var PID = process.pid;
+var PID = typeof process !== 'undefined' ? process.pid : -1;
 
 /**
  * Produce log records. It could not be create manuall,
