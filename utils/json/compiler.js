@@ -151,12 +151,7 @@ module.exports = function(serializers) {
     'return __p;\n}';
   var result;
 
-  try {
-    result = Function(argumentKeys, 'return ' + source ).apply(undefined, argumentValues);
-  } catch(e) {
-    e.source = source;
-    throw e;
-  }
+  result = Function(argumentKeys, 'return ' + source ).apply(undefined, argumentValues);
 
   result.source = source;
 

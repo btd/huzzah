@@ -265,13 +265,8 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
     'return __p;\n}';
   var result;
 
-  try {
-    result = Function(argumentKeys, 'return ' + source )
+  result = Function(argumentKeys, 'return ' + source )
       .apply(undefined, argumentValues.concat(dateFormats));
-  } catch(e) {
-    e.source = source;
-    throw e;
-  }
 
   result.source = source;
 

@@ -204,13 +204,8 @@ module.exports = function compile(onodes) {
     'return __p;\n}';
   var result;
 
-  try {
-    result = Function(argumentKeys, 'return ' + source )
+  result = Function(argumentKeys, 'return ' + source )
       .apply(undefined, argumentValues.concat(dateFormats));
-  } catch(e) {
-    e.source = source;
-    throw e;
-  }
 
   result.source = source;
 
