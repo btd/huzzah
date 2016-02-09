@@ -2,7 +2,7 @@ var quote = require('./quote');
 var compileMessage = require('./message');
 require('should');
 
-var EOL = require('os').EOL;
+var EOL = '\n';
 
 var rec = {
   level: 30,

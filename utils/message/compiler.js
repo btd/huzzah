@@ -1,4 +1,4 @@
-var EOL = require('os').EOL;
+var EOL = '\n';
 var quote = require('../quote');
 var LEVELS = require('../../levels');
 var stringify = require('../safe-json-stringify');

@@ -3,7 +3,7 @@ var quote = require('./quote');
 var compileStrftime = require('./strftime');
 require('should');
 
-var EOL = require('os').EOL;
+var EOL = '\n';
 
 var date1 = new Date(2016, 0, 29, 9, 4, 19, 720);
 var date2 = new Date(2009, 9, 8, 14, 14, 9, 720);

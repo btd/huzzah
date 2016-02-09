@@ -1,4 +1,4 @@
-var EOL = require('os').EOL;
+var EOL = '\n';
 var quote = require('../quote');
 
 

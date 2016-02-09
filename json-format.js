@@ -1,4 +1,4 @@
-var EOL = require('os').EOL;
+var EOL = '\n';
 var compile = require('./utils/json/compiler');
 
 module.exports = function(serializers) {
