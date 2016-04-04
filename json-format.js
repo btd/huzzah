@@ -1,9 +1,9 @@
 var EOL = '\n';
-var compile = require('./utils/json/compiler');
+var f = require('./utils/json/index');
 
-module.exports = function(serializers) {
-  var f = compile(serializers || {});
-  return function(record) {
-    return f(record) + EOL;
+module.exports = function createJsonFormat(serializers) {
+  var s = serializers || {};
+  return function jsonFormat(record) {
+    return f(record, s) + EOL;
   };
 };
