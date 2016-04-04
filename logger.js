@@ -64,7 +64,7 @@ Logger.prototype = {
 };
 
 function makeLogAtLevelMethod(level) {
-  return function() {
+  return function logAtLevel() {
     var len = arguments.length;
     var args = new Array(len);
     for(var i = 0; i < len; i++) {
