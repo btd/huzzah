@@ -41,3 +41,5 @@ createFormatFunction.locale = {
 
 
 module.exports = createFormatFunction;
+
+module.exports.isoFormat = compile.isoFormat;

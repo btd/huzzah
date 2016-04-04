@@ -272,3 +272,24 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
 
   return result;
 };
+
+module.exports.isoFormat = function(d) {
+  var __pad2 = pad2,
+    __padZero3 = padZero3,
+    __p = '';
+  __p += d.getUTCFullYear();
+  __p += '-';
+  __p += __pad2(d.getUTCMonth() + 1, "0");
+  __p += '-';
+  __p += __pad2(d.getUTCDate(), "0");
+  __p += 'T';
+  __p += __pad2(d.getUTCHours(), "0");
+  __p += ':';
+  __p += __pad2(d.getUTCMinutes(), "0");
+  __p += ':';
+  __p += __pad2(d.getUTCSeconds(), "0");
+  __p += '.';
+  __p += __padZero3(d.getUTCMilliseconds());
+  __p += 'Z';
+  return __p;
+};
