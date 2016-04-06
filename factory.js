@@ -4,7 +4,6 @@ var LoggerSettings = require('./settings');
 
 var SEP = '.';
 var ROOT = 'root';
-var NOOP = function() {};
 
 function parentNames(name) {
   var names = [];
@@ -22,38 +21,23 @@ function parentNames(name) {
  *
  * @class
  */
-function LoggerFactory(opts) {
-  opts = opts || {};
-
+function LoggerFactory() {
   this._loggers = {};
   this._settings = {};
 
-  this._useHierarchy = typeof opts.useHierarchy === 'undefined' ? true : !!opts.useHierarchy;
-  this._useFixedLoggers = typeof opts.useFixedLoggers === 'undefined' ? false : !!opts.useFixedLoggers;
+  this._useHierarchy = true;
 }
 
 LoggerFactory.prototype = {
   /**
    * Set internal value to create loggers with parents. It means if it set to false
-   * when logger created never assumed it has parent loggers.
+   * all loggers have one single parent 'root' and all loggers configured via this 'root' logger.
    *
    * @param  {Boolean} value
    * @return {this}
    */
   setUseHierarchy: function(value) {
     this._useHierarchy = !!value;
-    return this;
-  },
-
-  /**
-   * Set internal value to fix loggers after creation. It literally means, that after logger
-   * created its settings never changed.
-   *
-   * @param  {Boolean} value
-   * @return {this}
-   */
-  setUseFixedLoggers: function(value) {
-    this._useFixedLoggers = !!value;
     return this;
   },
 
@@ -72,61 +56,27 @@ LoggerFactory.prototype = {
   },
 
   _getProperOnLogCallback: function(name) {
-    var that = this;
-    var settings;
-    var chain;
-    var chainLength;
-
     if(this._useHierarchy) {
-      if(this._useFixedLoggers) {
+      var parents = parentNames(name);
+      var parentsLength = parents.length;
+      var parentSettings = [];
 
-        chain = parentNames(name);
-        chainLength = chain.length;
-        settings = [];
+      for(var i = 0; i < parentsLength; i++) {
+        parentSettings.push(this.settings(parents[i]));
+      }
 
-        for(var i = 0; i < chainLength; i++) {
-          var s = this._settings[chain[i]];
-          if(s) {
-            settings.push(s);
-          }
+      var len = parentSettings.length;
+      return function onLog(record) {
+        for(var i = 0; i < len; i++) {
+          parentSettings[i].handle(record);
         }
-
-        var len = settings.length;
-        return function onLog(record) {
-          for(var i = 0; i < len; i++) {
-            settings[i].handle(record);
-          }
-        };
-      } else {
-        chain = parentNames(name);
-        chainLength = chain.length;
-
-        return function onLog(record) {
-          for(var i = 0; i < chainLength; i++) {
-            var settings = that._settings[chain[i]];
-            if(settings) {
-              settings.handle(record);
-            }
-          }
-        };
-      }
+      };
     } else {
-      if(this._useFixedLoggers) {
-        settings = this._settings[name];
+      var settings = this.settings(ROOT);
 
-        return settings ?
-          function onLog(record) {
-            settings.handle(record);
-          } :
-          NOOP;
-      } else {
-        return function onLog(record) {
-          var settings = that._settings[name];
-          if(settings) {
-            settings.handle(record);
-          }
-        };
-      }
+      return function onLog(record) {
+        settings.handle(record);
+      };
     }
   },
 

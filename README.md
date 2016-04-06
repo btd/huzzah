@@ -7,7 +7,7 @@
 
 You can finally say - Huzzah!!!
 
-It is the fastest and dead simple hierarchical text logger.
+It is one of the fastest and dead simple hierarchical text logger.
 
 Let step by step explain what does it mean.
 
@@ -15,12 +15,15 @@ Let step by step explain what does it mean.
 
 ```
 $ node benchmark/logging.js
-huzzah.info text format x 856,021 ops/sec ±0.46% (89 runs sampled)
-huzzah.info json format x 336,543 ops/sec ±1.34% (87 runs sampled)
-winston.info x 38,553 ops/sec ±2.99% (79 runs sampled)
-intel.info x 106,594 ops/sec ±0.48% (87 runs sampled)
-bunyan.info x 79,778 ops/sec ±0.31% (90 runs sampled)
-log4js.info x 49,651 ops/sec ±0.41% (86 runs sampled)
+huzzah.info h=1 text format x 1,129,416 ops/sec ±0.55% (89 runs sampled)
+huzzah.info h=1 json format x 557,241 ops/sec ±1.41% (88 runs sampled)
+huzzah.info h=0 text format x 2,231,541 ops/sec ±1.08% (91 runs sampled)
+huzzah.info h=0 json format x 2,316,618 ops/sec ±1.10% (91 runs sampled)
+winston.info x 37,611 ops/sec ±3.62% (79 runs sampled)
+intel.info x 105,780 ops/sec ±0.49% (89 runs sampled)
+bunyan.info x 82,470 ops/sec ±0.34% (91 runs sampled)
+log4js.info x 77,328 ops/sec ±0.34% (87 runs sampled)
+pino.info x 2,129,549 ops/sec ±0.87% (90 runs sampled)
 ```
 
 ## Dead simple
