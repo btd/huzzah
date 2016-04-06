@@ -91,28 +91,42 @@ That means you can configure some loggers and all nested loggers will reuse thie
 
 1. I need logger to reject all records with log level < INFO.
 
-	```js
-	// settings it is LoggerSettings (what is returned by LoggerFactory#settings)
-	settings.setLevel('INFO');
-	```
+  ```js
+  // settings it is LoggerSettings (what is returned by LoggerFactory#settings)
+  settings.setLevel('INFO');
+  ```
 
 2. I want my own format of records
 
-	```js
-	settings.setFormat('%date %msg%n');
-	```
+  ```js
+  settings.setFormat('%date %msg%n');
+  ```
 
 3. I want to produce JSON
 
-	```js
-	var jsonFormat = require('huzzah/json-format');
-	settings.setFormat(jsonFormat());
+  ```js
+  var jsonFormat = require('huzzah/json-format');
+  settings.setFormat(jsonFormat());
 
-	//jsonFormat can accept bunyan style serializers
-	```
+  //jsonFormat can accept bunyan style serializers
+  ```
 
 4. I want to add more fields to record (for JSON output)
 
-	```js
-	logger.with({ req, res }).info('Some message');
-	```
+  ```js
+  logger.with({ req, res }).info('Some message');
+  ```
+
+5. I do not need hierarchy - just one place for settings and uber speed.
+
+  ```js
+  var factory = require('huzzah');
+  factory.setUseHierarchy(false); // see benchmark where h=0
+
+  var s = factory.settings('root');//everything will be done via root settings
+
+  ```
+
+# license
+
+MIT

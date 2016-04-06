@@ -88,6 +88,15 @@ BaseHandler.prototype = Object.create(NullHandler.prototype);
  *
  * @param  {string|function} format - It is either formatted string as described, or function returning string and accepts just one argument log record
  * @return {this}
+ * @example
+ * var f = new LoggerFactory();
+ *
+ * var logger = f.get('a.b');
+ *
+ * f.settings('a.b')
+ *   .addHandler(new ConsoleHandler().setFormat(jsonFormat({
+ *     timestamp: strftimeCompile('%Y/%m/%d %H:%M:%S,%L000')
+ *   })));
  */
 BaseHandler.prototype.setFormat = function(format) {
   switch (typeof format) {
