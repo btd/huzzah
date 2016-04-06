@@ -28,8 +28,11 @@ function LoggerSettings() {
 
 LoggerSettings.prototype = Object.create(NullHandler.prototype);
 LoggerSettings.prototype._handle = function(record) {
-  for(var i = 0, len = this._handlers.length; i < len; i++) {
-    this._handlers[i].handle(record);
+  var len = this._handlers.length;
+  if(len > 0) {
+    for(var i = 0; i < len; i++) {
+      this._handlers[i].handle(record);
+    }
   }
 };
 
