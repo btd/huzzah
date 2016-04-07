@@ -15,15 +15,13 @@ Let step by step explain what does it mean.
 
 ```
 $ node benchmark/logging.js
-huzzah.info h=1 text format x 1,129,416 ops/sec ±0.55% (89 runs sampled)
-huzzah.info h=1 json format x 557,241 ops/sec ±1.41% (88 runs sampled)
-huzzah.info h=0 text format x 2,231,541 ops/sec ±1.08% (91 runs sampled)
-huzzah.info h=0 json format x 2,316,618 ops/sec ±1.10% (91 runs sampled)
-winston.info x 37,611 ops/sec ±3.62% (79 runs sampled)
-intel.info x 105,780 ops/sec ±0.49% (89 runs sampled)
-bunyan.info x 82,470 ops/sec ±0.34% (91 runs sampled)
-log4js.info x 77,328 ops/sec ±0.34% (87 runs sampled)
-pino.info x 2,129,549 ops/sec ±0.87% (90 runs sampled)
+huzzah.info text format x 1,086,987 ops/sec ±0.43% (92 runs sampled)
+huzzah.info json format x 511,541 ops/sec ±1.33% (86 runs sampled)
+winston.info x 38,257 ops/sec ±3.51% (81 runs sampled)
+intel.info x 100,880 ops/sec ±1.43% (85 runs sampled)
+bunyan.info x 82,518 ops/sec ±0.56% (92 runs sampled)
+log4js.info x 84,119 ops/sec ±0.31% (92 runs sampled)
+pino.info x 911,255 ops/sec ±0.85% (89 runs sampled)
 ```
 
 ## Dead simple
@@ -115,16 +113,6 @@ That means you can configure some loggers and all nested loggers will reuse thie
 
   ```js
   logger.with({ req, res }).info('Some message');
-  ```
-
-5. I do not need hierarchy - just one place for settings and uber speed.
-
-  ```js
-  var factory = require('huzzah');
-  factory.setUseHierarchy(false); // see benchmark where h=0
-
-  var s = factory.settings('root');//everything will be done via root settings
-
   ```
 
 # license
