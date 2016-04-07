@@ -11,7 +11,8 @@ var rec = {
   context: {
     a: 10,
     b: 'abc'
-  }
+  },
+  v: 0
 };
 
 describe('JSON Format', function() {
@@ -29,7 +30,8 @@ describe('JSON Format', function() {
       message: 'text message',
       name: 'logger_name',
       pid: 123,
-      timestamp: '2016-01-29T09:04:19.720Z'
+      timestamp: '2016-01-29T09:04:19.720Z',
+      v: 0
     });
   });
 });

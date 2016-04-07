@@ -1,40 +1,57 @@
 var stringify = require('../safe-json-stringify');
 var isoFormat = require('../strftime').isoFormat;
 
-var stringEscapes = {
-  '\\': '\\',
-  "\"": "\"",
-  '\n': 'n',
-  '\r': 'r',
-  '\t': 't',
-  '\u2028': 'u2028',
-  '\u2029': 'u2029'
+var ESCAPES = {
+  92: "\\\\",
+  34: '\\"',
+  8: "\\b",
+  12: "\\f",
+  10: "\\n",
+  13: "\\r",
+  9: "\\t"
 };
 
-/* Used to match unescaped characters in compiled string literals */
-var reUnescapedString = /["\n\r\t\u2028\u2029\\]/g;
-
-function escapeStringChar(match) {
-  return '\\' + stringEscapes[match];
+function pad2(n) {
+  switch(n.length) {
+    case 2: return '00';
+    case 1: return '0' + n;
+    case 0: return '' + n;
+  }
 }
 
-function quote(text) {
-  return simpleQuote(text.replace(reUnescapedString, escapeStringChar));
+var UNICODE_PREFIX = "\\u00";
+
+function escapeChar(character) {
+  var charCode = character.charCodeAt(0), escaped = ESCAPES[charCode];
+  if (escaped) {
+    return escaped;
+  }
+  return UNICODE_PREFIX + pad2(charCode.toString(16));
 }
 
-function simpleQuote(text) {
-  return '"' + text + '"';
+var reEscape = /[\x00-\x1f\x22\x5c]/g;
+function quote(value) {
+  reEscape.lastIndex = 0;
+  return '"' +
+    (
+      reEscape.test(value)
+        ? value.replace(reEscape, escapeChar)
+        : value
+    ) +
+    '"';
 }
+
+var JSON_VERSION = 0;
 
 module.exports = function(rec, __ser) {
   var msg = '';
 
   msg += "{";
-  msg += '"name":' + simpleQuote(rec.name);
+  msg += '"name":' + quote(rec.name);
   msg += ",";
   msg += '"level":' + rec.level;
   msg += ",";
-  msg += '"levelname":' + simpleQuote(rec.levelname);
+  msg += '"levelname":' + quote(rec.levelname);
   msg += ",";
   msg += '"pid":' + rec.pid;
   msg += ",";
@@ -73,6 +90,7 @@ module.exports = function(rec, __ser) {
     msg += ctx.join(",");
     msg += "}";
   }
+  msg += ',"v":' + JSON_VERSION;
   msg += "}";
   return msg;
 };
