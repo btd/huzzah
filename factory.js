@@ -24,22 +24,9 @@ function parentNames(name) {
 function LoggerFactory() {
   this._loggers = {};
   this._settings = {};
-
-  this._useHierarchy = true;
 }
 
 LoggerFactory.prototype = {
-  /**
-   * Set internal value to create loggers with parents. It means if it set to false
-   * all loggers have one single parent 'root' and all loggers configured via this 'root' logger.
-   *
-   * @param  {Boolean} value
-   * @return {this}
-   */
-  setUseHierarchy: function(value) {
-    this._useHierarchy = !!value;
-    return this;
-  },
 
   /**
    * Returns logger with given name
@@ -56,28 +43,21 @@ LoggerFactory.prototype = {
   },
 
   _getProperOnLogCallback: function(name) {
-    if(this._useHierarchy) {
-      var parents = parentNames(name);
-      var parentsLength = parents.length;
-      var parentSettings = [];
+    var parents = parentNames(name);
+    var parentsLength = parents.length;
+    var parentSettings = [];
 
-      for(var i = 0; i < parentsLength; i++) {
-        parentSettings.push(this.settings(parents[i]));
-      }
-
-      var len = parentSettings.length;
-      return function onLog(record) {
-        for(var i = 0; i < len; i++) {
-          parentSettings[i].handle(record);
-        }
-      };
-    } else {
-      var settings = this.settings(ROOT);
-
-      return function onLog(record) {
-        settings.handle(record);
-      };
+    for(var i = 0; i < parentsLength; i++) {
+      parentSettings.unshift(this.settings(parents[i]));
     }
+
+    var len = parentSettings.length;
+    return function onLog(record) {
+      var l = len;
+      while(l--) {
+        parentSettings[l].handle(record);
+      }
+    };
   },
 
   _createNewLogger: function(name) {

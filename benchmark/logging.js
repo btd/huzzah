@@ -20,23 +20,15 @@ stdout.write = function (out, encoding, cb) {
   return true;
 };
 
-var f1 = new LoggerFactory().setUseHierarchy(true);
-var f1l1 = f1.get('a');
+var f1 = new LoggerFactory();
+var l1 = f1.get('a');
 f1.settings('a')
   .addHandler(new StreamHandler().setStream(stdout).setFormat('[%date] %logger:: %message%n'));
 
-var f1l2 = f1.get('b');
+var l2 = f1.get('b');
 f1.settings('b')
-  .addHandler(new StreamHandler().setStream(stdout).setFormat(jsonFormat({})));
+  .addHandler(new StreamHandler().setStream(stdout).setFormat(jsonFormat()));
 
-var f2 = new LoggerFactory().setUseHierarchy(false);
-var f2l1 = f2.get('a');
-f2.settings('a')
-  .addHandler(new StreamHandler().setStream(stdout).setFormat('[%date] %logger:: %message%n'));
-
-var f2l2 = f2.get('b');
-f2.settings('b')
-  .addHandler(new StreamHandler().setStream(stdout).setFormat(jsonFormat({})));
 
 intel.addHandler(new intel.handlers.Stream({ stream: stdout, formatter: new intel.Formatter('[%(date)s] %(name)s:: %(message)s') }));
 
@@ -57,17 +49,11 @@ var Benchmark = require('benchmark');
 var suite = new Benchmark.Suite('logging.info()');
 
 suite
-  .add('huzzah.info h=1 text format', function() {
-    f1l1.info('asdf');
+  .add('huzzah.info text format', function() {
+    l1.info('asdf');
   })
-  .add('huzzah.info h=1 json format', function() {
-    f1l2.info('asdf');
-  })
-  .add('huzzah.info h=0 text format', function() {
-    f2l1.info('asdf');
-  })
-  .add('huzzah.info h=0 json format', function() {
-    f2l2.info('asdf');
+  .add('huzzah.info json format', function() {
+    l2.info('asdf');
   })
   .add('winston.info', function() {
     winston.info('asdf');
