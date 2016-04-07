@@ -30,12 +30,12 @@ NullHandler.prototype = {
     return this;
   },
 
-  _enabledFor: function(level) {
-    return this._level <= level;
+  _enabledFor: function(record) {
+    return this._level <= record.level;
   },
 
   handle: function(record) {
-    if(this._enabledFor(record.level)) {
+    if(this._enabledFor(record)) {
       this._handle(record);
     }
   },
