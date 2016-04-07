@@ -8,7 +8,7 @@ var winston = require('winston');
 var intel = require('intel');
 var bunyan = require('bunyan');
 var log4js = require('log4js').getLogger();
-var pino = require('pino')();
+var pino = require('pino')({ safe: true, slowtime: true });
 
 var stdout = new EE();
 stdout.write = function (out, encoding, cb) {
