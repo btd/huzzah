@@ -17,7 +17,8 @@ function parentNames(name) {
 }
 
 /**
- * Handler logger and its settings manipulation
+ * Handler logger and its settings manipulation. 
+ * Default factory returned when you call `require("huzzah")`.
  *
  * @class
  */
