@@ -60,7 +60,9 @@ In simple case you can configure only **root** logger as single configuration po
 
 1. Install
 
-	`npm install --save huzzah`
+	```
+	npm install --save huzzah
+	```
 
 2. Configure
 
