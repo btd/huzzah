@@ -39,19 +39,22 @@ But we still need some configuration what and where to output:
 
 var ConsoleHandler = require('huzzah/handlers').ConsoleHandler;
 
+// require("huzzah") returns default logger factory instance
+// which contains loggers and their settings
 require('huzzah')
-  .settings('root')// see hierarchical section about what root mean
+  // get settings of logger with name 'root'
+  .settings('root')// see hierarchical section about what root mean (it is parent of all loggers)
+  // output every log message to console, from all loggers (.addHandler call can be chained)
   .addHandler(new ConsoleHandler())
 ```
-
-With code above all your loggers will output to console.
 
 ## Hierarchical loggers
 
 All loggers have string names. We can create chain of loggers by separating its name with dots.
 For example if we have logger with name `a.b.c` than its parents will be `a.b`, `a` and `root`.
 
-That means you can configure some loggers and all nested loggers will reuse thier settings.
+That means you can configure some parent loggers and all nested loggers will reuse thier settings.
+In simple case you can configure only **root** logger as single configuration point.
 
 ## How to use
 
@@ -75,7 +78,7 @@ That means you can configure some loggers and all nested loggers will reuse thie
 
 	```
 
-	See API.md for more info.
+	See [API.md](https://github.com/btd/huzzah/edit/master/API.md) for more info.
 
 3. Use
 
@@ -89,31 +92,39 @@ That means you can configure some loggers and all nested loggers will reuse thie
 
 1. I need logger to reject all records with log level < INFO.
 
-  ```js
-  // settings it is LoggerSettings (what is returned by LoggerFactory#settings)
-  settings.setLevel('INFO');
-  ```
+	  ```js
+	  // settings it is LoggerSettings (what is returned by LoggerFactory#settings)
+	  settings.setLevel('INFO');
+	  ```
 
 2. I want my own format of records
 
-  ```js
-  settings.setFormat('%date %msg%n');
-  ```
+	  ```js
+	  handler.setFormat('%date %msg%n');
+	  ```
 
 3. I want to produce JSON
 
-  ```js
-  var jsonFormat = require('huzzah/json-format');
-  settings.setFormat(jsonFormat());
-
-  //jsonFormat can accept bunyan style serializers
-  ```
+	  ```js
+	  var jsonFormat = require('huzzah/json-format');
+	  handler.setFormat(jsonFormat());
+	
+	  //jsonFormat can accept bunyan style serializers
+	  ```
 
 4. I want to add more fields to record (for JSON output)
 
-  ```js
-  logger.with({ req, res }).info('Some message');
-  ```
+	  ```js
+	  logger.with({ req, res }).info('Some message');
+	  ```
+	  
+	  With such way you can use it with express like:
+	  ```
+	  app.use((req, res, next) => {
+	    req.logger = logger.with({ req, res, req_id: uuid() });
+	  });
+	  ```
+	  And use req.logger to output additional context information. 
 
 # license
 
