@@ -1,10 +1,10 @@
-var parse = require('./parser');
-var compile = require('./compiler');
+var parse = require("./parser");
+var compile = require("./compiler");
 
 var formatCache = {};
 
 module.exports = function(text) {
-  if(formatCache[text]) {
+  if (formatCache[text]) {
     return formatCache[text];
   }
 
@@ -12,6 +12,6 @@ module.exports = function(text) {
   var result = compile(nodes);
 
   formatCache[text] = result;
-  
+
   return result;
 };

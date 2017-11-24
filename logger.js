@@ -1,7 +1,7 @@
-var printf = require('./utils/printf');
-var LEVELS = require('./levels');
+var printf = require("./utils/printf");
+var LEVELS = require("./levels");
 
-var PID = typeof process !== 'undefined' ? process.pid : -1;
+var PID = typeof process !== "undefined" ? process.pid : -1;
 
 /**
  * Produce log records. It could not be create manuall,
@@ -28,7 +28,7 @@ Logger.prototype = {
    * @private
    */
   log: function(level, args) {
-    var err = args[args.length - 1] instanceof Error ? args.pop(): undefined;
+    var err = args.length > 0 && args[args.length - 1] instanceof Error ? args.pop() : undefined;
 
     var record = {
       name: this._name,
@@ -55,8 +55,8 @@ Logger.prototype = {
    */
   with: function(context) {
     // fool check
-    if(typeof context !== 'object') {
-      throw new Error('`context` must be an Object instance');
+    if (typeof context !== "object" || context == null) {
+      throw new Error("`context` must be an Object instance");
     }
 
     return new Logger(this._onLogCallback, this._name, context);
@@ -67,7 +67,7 @@ function makeLogAtLevelMethod(level) {
   return function logAtLevel() {
     var len = arguments.length;
     var args = new Array(len);
-    for(var i = 0; i < len; i++) {
+    for (var i = 0; i < len; i++) {
       args[i] = arguments[i];
     }
     this.log(level, args);
@@ -138,6 +138,5 @@ Logger.prototype.warn = makeLogAtLevelMethod(LEVELS.WARN);
  * logger.error('Error happen while sending email', err);
  */
 Logger.prototype.error = makeLogAtLevelMethod(LEVELS.ERROR);
-
 
 module.exports = Logger;

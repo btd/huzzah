@@ -1,6 +1,6 @@
-var LEVELS = require('./levels');
+var LEVELS = require("./levels");
 
-var compileFormat = require('./utils/message');
+var compileFormat = require("./utils/message");
 
 /**
  * Basic handler. Does not actually handle anything.
@@ -13,18 +13,17 @@ function NullHandler() {
 }
 
 NullHandler.prototype = {
-
   /**
    * Set max accepted log level for this handler
    * @param  {string} level
    * @return {this}
    */
   setLevel: function(level) {
-    if(typeof level === 'string') {
+    if (typeof level === "string") {
       level = LEVELS[level.toUpperCase()];
     }
-    if(typeof level !== 'number' || !(level in LEVELS)) {
-      throw new Error(level + ' does not exists');
+    if (typeof level !== "number" || !(level in LEVELS)) {
+      throw new Error(level + " does not exists");
     }
     this._level = level;
     return this;
@@ -35,18 +34,48 @@ NullHandler.prototype = {
   },
 
   handle: function(record) {
-    if(this._enabledFor(record)) {
+    if (this._enabledFor(record)) {
       this._handle(record);
     }
   },
 
-  _handle: function() {
-  }
+  _handle: function() {}
 };
 
 module.exports.NullHandler = NullHandler;
 
-var DEFAULT_FORMAT = '%date %-5level %logger - %message%n%error';
+/**
+ * Holds settings of one logger.
+ * It is max accepted log level and handlers
+ *
+ * @class
+ * @extends NullHandler
+ */
+function MultiHandler() {
+  NullHandler.call(this);
+
+  this._handle = function _noop$_handle() {};
+}
+
+MultiHandler.prototype = Object.create(NullHandler.prototype);
+
+/**
+ * Adds handler to logger
+ * @param  {NullHandler} handler instance
+ * @return {this}
+ */
+MultiHandler.prototype.addHandler = function(handler) {
+  var prev = this._handle;
+  this._handle = function _handle(record) {
+    handler.handle(record);
+    prev(record);
+  };
+  return this;
+};
+
+module.exports.MultiHandler = MultiHandler;
+
+var DEFAULT_FORMAT = "%date %-5level %logger - %message%n%error";
 
 /**
  * Used as base class for most handlers
@@ -100,15 +129,15 @@ BaseHandler.prototype = Object.create(NullHandler.prototype);
  */
 BaseHandler.prototype.setFormat = function(format) {
   switch (typeof format) {
-    case 'string':
+    case "string":
       this.formatRecord = compileFormat(format);
       break;
 
-    case 'function':
+    case "function":
       this.formatRecord = format;
       break;
     default:
-      throw new Error('`format` can be function or string');
+      throw new Error("`format` can be function or string");
   }
   return this;
 };
@@ -125,7 +154,7 @@ function ConsoleHandler() {
 ConsoleHandler.prototype = Object.create(BaseHandler.prototype);
 ConsoleHandler.prototype._handle = function(record) {
   var line = this.formatRecord(record);
-  if(record.level > LEVELS.INFO) {
+  if (record.level > LEVELS.INFO) {
     process.stderr.write(line);
   } else {
     process.stdout.write(line);
@@ -144,7 +173,7 @@ function RawConsoleHandler() {
 
 RawConsoleHandler.prototype = Object.create(BaseHandler.prototype);
 RawConsoleHandler.prototype._handle = function(record) {
-  if(record.level < LEVELS.INFO) {
+  if (record.level < LEVELS.INFO) {
     console.log(record);
   } else if (record.level < LEVELS.WARN) {
     console.info(record);

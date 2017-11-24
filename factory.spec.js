@@ -1,51 +1,51 @@
-var LoggerFactory = require('./factory');
-var should = require('should');
-var sinon = require('sinon');
+var LoggerFactory = require("./factory");
+var should = require("should");
+var sinon = require("sinon");
 
-describe('LoggerFactory', function() {
-  describe('#settings', function() {
-    it('should return settings by logger name', function() {
+describe("LoggerFactory", function() {
+  describe("#settings", function() {
+    it("should return settings by logger name", function() {
       var f = new LoggerFactory();
-      should.exist(f.settings('abc'));
+      should.exist(f.settings("abc"));
     });
 
-    it('should return the same settings for the same name', function() {
+    it("should return the same settings for the same name", function() {
       var f = new LoggerFactory();
 
-      var s1 = f.settings('abc');
-      var s2 = f.settings('abc');
-      var s3 = f.settings('a');
+      var s1 = f.settings("abc");
+      var s2 = f.settings("abc");
+      var s3 = f.settings("a");
 
       s1.should.equal(s2);
       s1.should.not.be.equal(s3);
     });
   });
 
-  describe('#get', function() {
-    it('should return logger by name', function() {
+  describe("#get", function() {
+    it("should return logger by name", function() {
       var f = new LoggerFactory();
-      should.exist(f.get('abc'));
+      should.exist(f.get("abc"));
     });
 
-    it('should return the same by name', function() {
+    it("should return the same by name", function() {
       var f = new LoggerFactory();
 
-      var s1 = f.get('abc');
-      var s2 = f.get('abc');
-      var s3 = f.get('a');
+      var s1 = f.get("abc");
+      var s2 = f.get("abc");
+      var s3 = f.get("a");
 
       s1.should.equal(s2);
       s1.should.not.be.equal(s3);
     });
   });
 
-  it('bind logger callback to settings handle', function() {
+  it("bind logger callback to settings handle", function() {
     var f = new LoggerFactory();
 
-    var s = f.settings('a');
+    var s = f.settings("a");
     s.handle = sinon.spy();
 
-    var l = f.get('a');
+    var l = f.get("a");
 
     l.trace();
 

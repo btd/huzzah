@@ -1,4 +1,4 @@
-var LoggerFactory = require('./factory');
+var LoggerFactory = require("./factory");
 
 var defaultFactory = new LoggerFactory();
 

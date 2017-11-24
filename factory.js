@@ -1,14 +1,13 @@
-var Logger = require('./logger');
-var LoggerSettings = require('./settings');
+var Logger = require("./logger");
+var MultiHandler = require("./handlers").MultiHandler;
 
-
-var SEP = '.';
-var ROOT = 'root';
+var SEP = ".";
+var ROOT = "root";
 
 function parentNames(name) {
   var names = [];
   var parts = name.split(SEP);
-  while(parts.length) {
+  while (parts.length) {
     names.push(parts.join(SEP));
     parts.pop();
   }
@@ -17,7 +16,7 @@ function parentNames(name) {
 }
 
 /**
- * Handler logger and its settings manipulation. 
+ * Handler logger and its settings manipulation.
  * Default factory returned when you call `require("huzzah")`.
  *
  * @class
@@ -28,7 +27,6 @@ function LoggerFactory() {
 }
 
 LoggerFactory.prototype = {
-
   /**
    * Returns logger with given name
    * @param  {string} name Name of logger
@@ -36,7 +34,7 @@ LoggerFactory.prototype = {
    */
   get: function(name) {
     var logger = this._loggers[name];
-    if(!logger) {
+    if (!logger) {
       logger = this._createNewLogger(name);
       this._loggers[name] = logger;
     }
@@ -48,17 +46,27 @@ LoggerFactory.prototype = {
     var parentsLength = parents.length;
     var parentSettings = [];
 
-    for(var i = 0; i < parentsLength; i++) {
+    for (var i = 0; i < parentsLength; i++) {
       parentSettings.unshift(this.settings(parents[i]));
     }
 
     var len = parentSettings.length;
-    return function onLog(record) {
-      var l = len;
-      while(l--) {
-        parentSettings[l].handle(record);
-      }
-    };
+    switch (len) {
+      case 0:
+        return function onLog$0() {};
+      case 1:
+        var root = parentSettings[0];
+        return function onLog$root(record) {
+          root.handle(record);
+        };
+      default:
+        return function onLog(record) {
+          var l = len;
+          while (l--) {
+            parentSettings[l].handle(record);
+          }
+        };
+    }
   },
 
   _createNewLogger: function(name) {
@@ -66,7 +74,7 @@ LoggerFactory.prototype = {
   },
 
   _createNewSettings: function() {
-    return new LoggerSettings();
+    return new MultiHandler();
   },
 
   /**
