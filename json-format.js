@@ -38,16 +38,11 @@ function jsonFormat(rec, __ser, opts) {
 
   if (rec.err != null) {
     msg +=
-      "," +
-      '"err":' +
-      "{" +
-      '"name":' +
+      ',"err":{"name":' +
       opts.stringify(rec.err.name) +
-      "," +
-      '"message":' +
+      ',"message":' +
       opts.stringify(rec.err.message) +
-      "," +
-      '"stack":' +
+      ',"stack":' +
       opts.stringify(rec.err.stack) +
       "}";
   }
