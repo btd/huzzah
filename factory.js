@@ -18,7 +18,7 @@ function parentNames(name) {
 /**
  * Handler logger and its settings manipulation.
  * Default factory returned when you call `require("huzzah")`.
- *
+ * @param  {{handlerConstructor:function}} [opts] Options
  * @class
  */
 function LoggerFactory(opts) {
