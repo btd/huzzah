@@ -21,9 +21,13 @@ function parentNames(name) {
  *
  * @class
  */
-function LoggerFactory() {
+function LoggerFactory(opts) {
   this._loggers = {};
-  this._settings = {};
+  this._handler = {};
+
+  opts = opts || {};
+
+  this._handlerConstructor = opts.handlerConstructor || MultiHandler;
 }
 
 LoggerFactory.prototype = {
@@ -41,29 +45,53 @@ LoggerFactory.prototype = {
     return logger;
   },
 
+  _onLog: function(name) {
+    var that = this;
+    return function onLog(record) {
+      var handler = that._handler[name];
+      if (handler != null) {
+        handler.handle(record);
+      }
+    };
+  },
+
   _getProperOnLogCallback: function(name) {
     var parents = parentNames(name);
     var parentsLength = parents.length;
-    var parentSettings = [];
+    var callbacks = [];
 
     for (var i = 0; i < parentsLength; i++) {
-      parentSettings.unshift(this.settings(parents[i]));
+      callbacks.unshift(this._onLog(parents[i]));
     }
 
-    var len = parentSettings.length;
+    var len = callbacks.length;
+    var p1, p2, p3;
     switch (len) {
       case 0:
         return function onLog$0() {};
       case 1:
-        var root = parentSettings[0];
-        return function onLog$root(record) {
-          root.handle(record);
+        return callbacks[0];
+      case 2:
+        p1 = callbacks[0];
+        p2 = callbacks[1];
+        return function onLog$2(record) {
+          p1(record);
+          p2(record);
+        };
+      case 3:
+        p1 = callbacks[0];
+        p2 = callbacks[1];
+        p3 = callbacks[2];
+        return function onLog$3(record) {
+          p1(record);
+          p2(record);
+          p3(record);
         };
       default:
         return function onLog(record) {
           var l = len;
           while (l--) {
-            parentSettings[l].handle(record);
+            callbacks[l](record);
           }
         };
     }
@@ -73,18 +101,28 @@ LoggerFactory.prototype = {
     return new Logger(this._getProperOnLogCallback(name), name);
   },
 
-  _createNewSettings: function() {
-    return new MultiHandler();
+  _createNewHandler: function() {
+    return new this._handlerConstructor();
   },
 
   /**
    * Returns settings for logger with given name
    * @param  {string} name logger name
-   * @return {LoggerSettings}
+   * @deprecated
+   * @return {Handler}
    */
   settings: function(name) {
-    this._settings[name] = this._settings[name] || this._createNewSettings();
-    return this._settings[name];
+    return this.handler(name);
+  },
+
+  /**
+   * Returns hander for logger with given name
+   * @param  {string} name logger name
+   * @return {Handler}
+   */
+  handler: function(name) {
+    this._handler[name] = this._handler[name] || this._createNewHandler();
+    return this._handler[name];
   }
 };
 

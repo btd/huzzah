@@ -19,31 +19,34 @@ stdout.write = function(out, encoding, cb) {
   return true;
 };
 
-var f1 = new LoggerFactory();
+var f1 = new LoggerFactory({ handlerConstructor: StreamHandler });
 
 var l1 = f1.get("a");
-f1.settings("a").addHandler(
-  new StreamHandler().setStream(stdout).setFormat(
+f1
+  .handler("a")
+  .setStream(stdout)
+  .setFormat(
     jsonFormat({
       timestamp: function(t) {
-        return t.getTime();
+        return t;
       }
     })
-  )
-);
+  );
 
 var l2 = f1.get("b");
-f1.settings("b").addHandler(new StreamHandler().setStream(stdout).setFormat(jsonFormat()));
+f1
+  .handler("b")
+  .setStream(stdout)
+  .setFormat(jsonFormat());
 
 var l3 = f1.get("c");
 
 var l4 = f1.get("e");
-f1.settings("e").addHandler(
-  new StreamHandler()
-    .setStream(stdout)
-    .setShouldFormat(false)
-    .setFormat(jsonFormat())
-);
+f1
+  .handler("e")
+  .setStream(stdout)
+  .setShouldFormat(false)
+  .setFormat(jsonFormat());
 
 var log = bunyan.createLogger({ name: "lr", level: "debug" });
 
