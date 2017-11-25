@@ -69,7 +69,7 @@ describe("Logger", function() {
 
     it("call callback function with record containing timestamp", function() {
       var logger = new Logger(function(record) {
-        record.should.have.property("timestamp").which.is.Date();
+        record.should.have.property("timestamp").which.is.Number();
       });
 
       logger.log(LEVELS.TRACE, []);

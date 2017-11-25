@@ -36,7 +36,7 @@ Logger.prototype = {
       levelname: LEVELS[level],
       args: args,
       pid: PID,
-      timestamp: new Date(),
+      timestamp: Date.now(),
       err: err,
       message: printf(args),
       context: this._context

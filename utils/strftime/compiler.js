@@ -106,13 +106,7 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
               break;
 
             case "C": //Year divided by 100 and truncated to integer (00-99)
-              write(
-                "__pad2(Math.floor(d.get" +
-                  tz +
-                  'FullYear() / 100), "' +
-                  padding +
-                  '")'
-              );
+              write("__pad2(Math.floor(d.get" + tz + 'FullYear() / 100), "' + padding + '")');
               break;
 
             case "D":
@@ -140,9 +134,7 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
               break;
 
             case "I": //Hour in 12h format (01-12)
-              write(
-                "__pad2(__hours12(d, " + quote(tz) + '), "' + padding + '")'
-              );
+              write("__pad2(__hours12(d, " + quote(tz) + '), "' + padding + '")');
               break;
 
             case "j": //Day of the year (001-366)
@@ -163,9 +155,7 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
               break;
 
             case "l":
-              write(
-                "__pad2(__hours12(d, " + quote(tz) + '), "' + padding + '")'
-              );
+              write("__pad2(__hours12(d, " + quote(tz) + '), "' + padding + '")');
               break;
 
             case "M":
@@ -209,13 +199,7 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
               break;
 
             case "U":
-              write(
-                '__pad2(__weekNumber(d, "sunday", ' +
-                  quote(tz) +
-                  '), "' +
-                  padding +
-                  '")'
-              );
+              write('__pad2(__weekNumber(d, "sunday", ' + quote(tz) + '), "' + padding + '")');
               break;
 
             case "u": // 1 - 7, Monday is first day of the week
@@ -227,13 +211,7 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
               break;
 
             case "W":
-              write(
-                '__pad2(__weekNumber(d, "monday", ' +
-                  quote(tz) +
-                  '), "' +
-                  padding +
-                  '")'
-              );
+              write('__pad2(__weekNumber(d, "monday", ' + quote(tz) + '), "' + padding + '")');
               break;
 
             case "w":
@@ -253,16 +231,11 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
               break;
 
             case "y":
-              write(
-                "__pad2(d.get" + tz + 'FullYear() % 100, "' + padding + '")'
-              );
+              write("__pad2(d.get" + tz + 'FullYear() % 100, "' + padding + '")');
               break;
 
             case "Z":
-              write(
-                "((__d = d.toString().match(/\\((\\w+)\\)/)) " +
-                  '&& __d[1] || "" )'
-              );
+              write("((__d = d.toString().match(/\\((\\w+)\\)/)) " + '&& __d[1] || "" )');
               break;
 
             case "z":
@@ -273,9 +246,7 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
               break;
 
             default:
-              throw new Error(
-                "Strftime format node variable not supported: %" + node.name
-              );
+              throw new Error("Strftime format node variable not supported: %" + node.name);
           }
 
           write(";\n");
@@ -287,7 +258,8 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
   processNodes(nodes);
 
   source =
-    "function(d) {\n" +
+    "function(t) {\n" +
+    "var d = new Date(t);\n" +
     "var " +
     argumentKeys
       .map(function(a) {
@@ -299,17 +271,15 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
     "return __p;\n}";
   var result;
 
-  result = Function(argumentKeys, "return " + source).apply(
-    undefined,
-    argumentValues.concat(dateFormats)
-  );
+  result = Function(argumentKeys, "return " + source).apply(undefined, argumentValues.concat(dateFormats));
 
   result.source = source;
 
   return result;
 };
 
-module.exports.isoFormat = function(d) {
+module.exports.isoFormat = function(t) {
+  var d = new Date(t);
   var __pad2 = pad2,
     __padZero3 = padZero3,
     __p = "";
