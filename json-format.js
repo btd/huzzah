@@ -32,7 +32,7 @@ function jsonFormat(rec, __ser, opts) {
     ',"' +
     opts.timestampKeyName +
     '":' +
-    String(__ser.timestamp(rec.timestamp)) +
+    String(opts.stringify(__ser.timestamp(rec.timestamp))) +
     ',"v":' +
     JSON_VERSION;
 
@@ -76,11 +76,7 @@ module.exports = function createJsonFormat(serializers, opts) {
   o.eol = o.eol == null ? "\n" : o.eol;
 
   var s = serializers || {};
-  s.timestamp =
-    s.timestamp ||
-    function(t) {
-      return o.stringify(isoFormat(t));
-    };
+  s.timestamp = s.timestamp || isoFormat;
 
   o.timestampKeyName = o.timestampKeyName || "timestamp";
 
