@@ -1,6 +1,6 @@
 {
   "name": "huzzah",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "devDependencies": {
     "benchmark": "^2.0.0",
     "bunyan": "latest",
@@ -33,8 +33,15 @@
     "type": "git",
     "url": "https://github.com/btd/huzzah.git"
   },
-  "keywords": ["log", "logging", "logger", "console"],
+  "keywords": [
+    "log",
+    "logging",
+    "logger",
+    "console"
+  ],
   "author": "Denis Bardadym <bardadymchik@gmail.com>",
   "license": "MIT",
-  "engines": { "node": ">=6" }
+  "engines": {
+    "node": ">=6"
+  }
 }
