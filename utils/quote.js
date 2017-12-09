@@ -1,4 +1,6 @@
-var stringEscapes = {
+"use strict";
+
+const stringEscapes = {
   "\\": "\\",
   "'": "'",
   "\n": "n",
@@ -9,7 +11,7 @@ var stringEscapes = {
 };
 
 /* Used to match unescaped characters in compiled string literals */
-var reUnescapedString = /['\n\r\t\u2028\u2029\\]/g;
+const reUnescapedString = /['\n\r\t\u2028\u2029\\]/g;
 
 function escapeStringChar(match) {
   return "\\" + stringEscapes[match];

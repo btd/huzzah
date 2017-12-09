@@ -1,32 +1,32 @@
-var isoFormat = require("./utils/strftime").isoFormat;
-var stringify = require("./utils/safe-json-stringify");
+"use strict";
 
-var LEVELS = require("./levels");
+const { isoFormat } = require("./utils/strftime");
+const stringify = require("./utils/safe-json-stringify");
 
-var LEVELS_QUOTED = {};
+const LEVELS = require("./levels");
+
+const LEVELS_QUOTED = {};
 Object.keys(LEVELS).forEach(function(level) {
   LEVELS_QUOTED[level] = JSON.stringify(level);
 });
 
-var JSON_VERSION = "0";
+const JSON_VERSION = "0";
 
-var NAMES_QUOTTED_CACHE = {};
+const NAMES_QUOTTED_CACHE = {};
 
 function jsonFormat(rec, __ser, opts) {
-  if (!(rec.name in NAMES_QUOTTED_CACHE)) {
-    NAMES_QUOTTED_CACHE[rec.name] = opts.stringify(rec.name);
+  if (!(rec.logger in NAMES_QUOTTED_CACHE)) {
+    NAMES_QUOTTED_CACHE[rec.logger] = opts.stringify(rec.logger);
   }
 
-  var msg =
+  let msg =
     "{" +
-    '"name":' +
-    NAMES_QUOTTED_CACHE[rec.name] +
+    '"logger":' +
+    NAMES_QUOTTED_CACHE[rec.logger] +
     ',"level":' +
     String(rec.level) +
     ',"levelname":' +
     LEVELS_QUOTED[rec.levelname] +
-    ',"pid":' +
-    String(rec.pid) +
     ',"message":' +
     opts.stringify(rec.message) +
     ',"' +
@@ -50,12 +50,12 @@ function jsonFormat(rec, __ser, opts) {
   if (rec.context != null) {
     msg += ',"context":{';
 
-    var ctx = [];
-    for (var name in rec.context) {
-      var value = rec.context[name];
+    const ctx = [];
+    for (const name in rec.context) {
+      const value = rec.context[name];
       if (value === undefined) continue;
       if (__ser.context != null && name in __ser.context) {
-        var res = __ser.context[name](value);
+        const res = __ser.context[name](value);
         if (res === undefined) continue;
         ctx.push(opts.stringify(name) + ":" + opts.stringify(res));
       } else {
@@ -71,11 +71,11 @@ function jsonFormat(rec, __ser, opts) {
 }
 
 module.exports = function createJsonFormat(serializers, opts) {
-  var o = opts || {};
+  const o = opts || {};
   o.stringify = o.stringify === "safe" ? stringify : JSON.stringify;
   o.eol = o.eol == null ? "\n" : o.eol;
 
-  var s = serializers || {};
+  const s = serializers || {};
   s.timestamp = s.timestamp || isoFormat;
 
   o.timestampKeyName = o.timestampKeyName || "timestamp";

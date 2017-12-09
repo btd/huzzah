@@ -1,13 +1,16 @@
-var LoggerFactory = require("./factory");
-var ConsoleHandler = require("./handlers").ConsoleHandler;
+/*eslint-env mocha*/
+"use strict";
 
-var strftimeCompile = require("./utils/strftime");
+const LoggerFactory = require("./factory");
+const ConsoleHandler = require("./handlers").ConsoleHandler;
 
-var jsonFormat = require("./json-format");
+const strftimeCompile = require("./utils/strftime");
 
-var f = new LoggerFactory();
+const jsonFormat = require("./json-format");
 
-var logger = f.get("a.b");
+const f = new LoggerFactory();
+
+const logger = f.get("a.b");
 
 f.settings("a.b").addHandler(
   new ConsoleHandler().setFormat(

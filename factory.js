@@ -1,12 +1,14 @@
-var Logger = require("./logger");
-var MultiHandler = require("./handlers").MultiHandler;
+"use strict";
 
-var SEP = ".";
-var ROOT = "root";
+const Logger = require("./logger");
+const { MultiHandler } = require("./handlers");
+
+const SEP = ".";
+const ROOT = "root";
 
 function parentNames(name) {
-  var names = [];
-  var parts = name.split(SEP);
+  const names = [];
+  const parts = name.split(SEP);
   while (parts.length) {
     names.push(parts.join(SEP));
     parts.pop();
@@ -21,51 +23,49 @@ function parentNames(name) {
  * @param  {{handlerConstructor:function}} [opts] Options
  * @class
  */
-function LoggerFactory(opts) {
-  this._loggers = {};
-  this._handler = {};
+class LoggerFactory {
+  constructor(opts = { handlerConstructor: MultiHandler }) {
+    this._loggers = {};
+    this._handlers = {};
 
-  opts = opts || {};
+    this._handlerConstructor = opts.handlerConstructor;
+  }
 
-  this._handlerConstructor = opts.handlerConstructor || MultiHandler;
-}
-
-LoggerFactory.prototype = {
   /**
    * Returns logger with given name
    * @param  {string} name Name of logger
    * @return {Logger}
    */
-  get: function(name) {
-    var logger = this._loggers[name];
+  get(name) {
+    let logger = this._loggers[name];
     if (!logger) {
       logger = this._createNewLogger(name);
       this._loggers[name] = logger;
     }
     return logger;
-  },
+  }
 
-  _onLog: function(name) {
-    var that = this;
+  _onLog(name) {
+    const that = this;
     return function onLog(record) {
-      var handler = that._handler[name];
+      const handler = that._handlers[name];
       if (handler != null) {
         handler.handle(record);
       }
     };
-  },
+  }
 
-  _getProperOnLogCallback: function(name) {
-    var parents = parentNames(name);
-    var parentsLength = parents.length;
-    var callbacks = [];
+  _getProperOnLogCallback(name) {
+    const parents = parentNames(name);
+    const parentsLength = parents.length;
+    const callbacks = [];
 
-    for (var i = 0; i < parentsLength; i++) {
+    for (let i = 0; i < parentsLength; i++) {
       callbacks.unshift(this._onLog(parents[i]));
     }
 
-    var len = callbacks.length;
-    var p1, p2, p3;
+    const len = callbacks.length;
+    let p1, p2, p3;
     switch (len) {
       case 0:
         return function onLog$0() {};
@@ -89,21 +89,21 @@ LoggerFactory.prototype = {
         };
       default:
         return function onLog(record) {
-          var l = len;
+          let l = len;
           while (l--) {
             callbacks[l](record);
           }
         };
     }
-  },
+  }
 
-  _createNewLogger: function(name) {
+  _createNewLogger(name) {
     return new Logger(this._getProperOnLogCallback(name), name);
-  },
+  }
 
-  _createNewHandler: function() {
+  _createNewHandler() {
     return new this._handlerConstructor();
-  },
+  }
 
   /**
    * Returns settings for logger with given name
@@ -111,19 +111,19 @@ LoggerFactory.prototype = {
    * @deprecated
    * @return {Handler}
    */
-  settings: function(name) {
+  settings(name) {
     return this.handler(name);
-  },
+  }
 
   /**
    * Returns hander for logger with given name
    * @param  {string} name logger name
    * @return {Handler}
    */
-  handler: function(name) {
-    this._handler[name] = this._handler[name] || this._createNewHandler();
-    return this._handler[name];
+  handler(name) {
+    this._handlers[name] = this._handlers[name] || this._createNewHandler();
+    return this._handlers[name];
   }
-};
+}
 
 module.exports = LoggerFactory;

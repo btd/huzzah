@@ -1,21 +1,18 @@
-var parse = require("./parser");
-var compile = require("./compiler");
+"use strict";
 
-var formatCache = {};
+const parse = require("./parser");
+const compile = require("./compiler");
+
+const formatCache = {};
 
 function createFormatFunction(text, tz) {
-  var key = text + "|" + (tz || "");
+  const key = text + "|" + (tz || "");
   if (formatCache[key]) {
     return formatCache[key];
   }
 
-  var nodes = parse(text);
-  var result = compile(
-    nodes,
-    createFormatFunction.locale,
-    createFormatFunction,
-    tz
-  );
+  const nodes = parse(text);
+  const result = compile(nodes, createFormatFunction.locale, createFormatFunction, tz);
 
   formatCache[key] = result;
 
@@ -23,15 +20,7 @@ function createFormatFunction(text, tz) {
 }
 
 createFormatFunction.locale = {
-  days: [
-    "Sunday",
-    "Monday",
-    "Tuesday",
-    "Wednesday",
-    "Thursday",
-    "Friday",
-    "Saturday"
-  ],
+  days: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
   shortDays: ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"],
   months: [
     "January",
@@ -47,20 +36,7 @@ createFormatFunction.locale = {
     "November",
     "December"
   ],
-  shortMonths: [
-    "Jan",
-    "Feb",
-    "Mar",
-    "Apr",
-    "May",
-    "Jun",
-    "Jul",
-    "Aug",
-    "Sep",
-    "Oct",
-    "Nov",
-    "Dec"
-  ],
+  shortMonths: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
   AM: "AM",
   PM: "PM",
   am: "am",

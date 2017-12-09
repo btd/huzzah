@@ -10,7 +10,7 @@ function format(args) {
   if (typeof f !== "string") {
     var objects = [];
     for (i = 0; i < args.length; i++) {
-      objects.push(util.inspect(args[i], inspectOptions));
+      objects.push(stringify(args[i], inspectOptions));
     }
     return objects.join(" ");
   }

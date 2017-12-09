@@ -1,8 +1,15 @@
-extends: eslint:recommended
+---
+root: true
+
+extends:
+  - eslint:recommended
+
+parserOptions:
+  ecmaVersion: 8
 
 env:
   node: true
-  mocha: true
+  es6: true
 
 rules:
   quotes: 0
@@ -18,6 +25,8 @@ rules:
   new-cap: 0
   callback-return: 0
   no-loop-func: 0
-  strict: 0
+  strict: 2
   semi: [2, "always"]
   no-console: 1
+  prefer-const: 2
+  no-var: 2

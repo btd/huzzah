@@ -1,3 +1,5 @@
+"use strict";
+
 function Const(text) {
   return { type: "const", v: text };
 }
@@ -8,23 +10,14 @@ function Dec(name, nodes) {
   return { type: "decorator", name: name, nodes: nodes || [] };
 }
 
-var RE = /%(?:([\.a-z]+)\(([^\)]*)\))|%(?:(-?\d+)?(?:.(-?\d+))?([a-z]+|%)(?:\{([^\}]*)\})?)/g;
+const RE = /%(?:([.a-z]+)\(([^)]*)\))|%(?:(-?\d+)?(?:.(-?\d+))?([a-z]+|%)(?:\{([^}]*)\})?)/g;
 
 module.exports = function parse(format) {
-  var nodes = [];
+  const nodes = [];
 
-  var index = 0,
+  let index = 0,
     s;
-  format.replace(RE, function(
-    _,
-    decName,
-    decArgs,
-    varPad,
-    varTrunc,
-    varName,
-    varArgs,
-    offset
-  ) {
+  format.replace(RE, function(_, decName, decArgs, varPad, varTrunc, varName, varArgs, offset) {
     s = format.slice(index, offset);
     if (s.length) {
       nodes.push(Const(s));

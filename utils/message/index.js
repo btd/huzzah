@@ -1,15 +1,17 @@
-var parse = require("./parser");
-var compile = require("./compiler");
+"use strict";
 
-var formatCache = {};
+const parse = require("./parser");
+const compile = require("./compiler");
+
+const formatCache = {};
 
 module.exports = function(text) {
   if (formatCache[text]) {
     return formatCache[text];
   }
 
-  var nodes = parse(text);
-  var result = compile(nodes);
+  const nodes = parse(text);
+  const result = compile(nodes);
 
   formatCache[text] = result;
 

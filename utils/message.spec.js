@@ -1,14 +1,16 @@
-var quote = require("./quote");
-var compileMessage = require("./message");
+/*eslint-env mocha*/
+"use strict";
+
+const quote = require("./quote");
+const compileMessage = require("./message");
 require("should");
 
-var EOL = "\n";
+const EOL = "\n";
 
-var rec = {
+const rec = {
   level: 30,
   levelname: "INFO",
-  name: "logger_name",
-  pid: 123,
+  logger: "logger_name",
   message: "text message",
   err: new Error("boom"),
   timestamp: new Date("2016-01-29T09:04:19.720Z"),
@@ -18,18 +20,16 @@ var rec = {
   }
 };
 
-var testCases = [
+const testCases = [
   ["test", "test"],
 
-  ["%c", rec.name],
-  ["%lo", rec.name],
-  ["%logger", rec.name],
+  ["%c", rec.logger],
+  ["%lo", rec.logger],
+  ["%logger", rec.logger],
 
   ["%p", rec.levelname],
   ["%le", rec.levelname],
   ["%level", rec.levelname],
-
-  ["%pid", rec.pid],
 
   ["%m", rec.message],
   ["%msg", rec.message],

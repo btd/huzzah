@@ -1,24 +1,24 @@
-var printf = require("./utils/printf");
-var LEVELS = require("./levels");
+"use strict";
 
-var PID = typeof process !== "undefined" ? process.pid : -1;
+const printf = require("./utils/printf");
+const LEVELS = require("./levels");
 
 /**
- * Produce log records. It could not be create manuall,
+ * Produce log records. It could not be created manually,
  * always use LoggerFactory instance to create loggers.
  *
- * @param {LoggerFactory} factory factory, holding this logger
+ * @param {function} onLogCallback factory, holding this logger
  * @param {string} name    name of this logger
  * @param {Object} context Set of keys, which will be auto-added to each record
  * @class
  */
-function Logger(onLogCallback, name, context) {
-  this._onLogCallback = onLogCallback;
-  this._name = name;
-  this._context = context;
-}
+class Logger {
+  constructor(onLogCallback, name, context) {
+    this._onLogCallback = onLogCallback;
+    this._name = name;
+    this._context = context;
+  }
 
-Logger.prototype = {
   /**
    * Create log record with given level and arguments.
    * Usually not used.
@@ -27,15 +27,14 @@ Logger.prototype = {
    * @param  {Array} args   Arguments
    * @private
    */
-  log: function(level, args) {
-    var err = args.length > 0 && args[args.length - 1] instanceof Error ? args.pop() : undefined;
+  log(level, args) {
+    const err = args.length > 0 && args[args.length - 1] instanceof Error ? args.pop() : undefined;
 
-    var record = {
-      name: this._name,
+    const record = {
+      logger: this._name,
       level: level,
       levelname: LEVELS[level],
       args: args,
-      pid: PID,
       timestamp: Date.now(),
       err: err,
       message: printf(args),
@@ -43,7 +42,7 @@ Logger.prototype = {
     };
 
     this._onLogCallback(record);
-  },
+  }
 
   /**
    * Creates new Logger with the same name, factory but with given context.
@@ -53,7 +52,7 @@ Logger.prototype = {
    * @param  {Object} context
    * @return {Logger}         new logger with given context
    */
-  with: function(context) {
+  with(context) {
     // fool check
     if (typeof context !== "object" || context == null) {
       throw new Error("`context` must be an Object instance");
@@ -61,82 +60,81 @@ Logger.prototype = {
 
     return new Logger(this._onLogCallback, this._name, context);
   }
-};
 
-function makeLogAtLevelMethod(level) {
-  return function logAtLevel() {
-    var len = arguments.length;
-    var args = new Array(len);
-    for (var i = 0; i < len; i++) {
-      args[i] = arguments[i];
-    }
-    this.log(level, args);
-  };
+  /**
+   * Create log record with level TRACE. If first argument is string, it is used as message format, like console.log do.
+   * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
+   *
+   * @param {...*} args Any arguments. Error must be one and last.
+   * @example
+   *
+   * logger.trace('User entered %s', userInput);
+   *
+   * logger.error('Error happen while sending email', err);
+   */
+  trace(...args) {
+    this.log(LEVELS.TRACE, args);
+  }
+
+  /**
+   * Create log record with level DEBUG. If first argument is string, it is used as message format, like console.log do.
+   * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
+   *
+   * @param {...*} args Any arguments. Error must be one and last.
+   * @example
+   *
+   * logger.trace('User entered %s', userInput);
+   *
+   * logger.error('Error happen while sending email', err);
+   */
+  debug(...args) {
+    this.log(LEVELS.DEBUG, args);
+  }
+
+  /**
+   * Create log record with level INFO. If first argument is string, it is used as message format, like console.log do.
+   * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
+   *
+   * @param {...*} args Any arguments. Error must be one and last.
+   * @example
+   *
+   * logger.trace('User entered %s', userInput);
+   *
+   * logger.error('Error happen while sending email', err);
+   */
+  info(...args) {
+    this.log(LEVELS.INFO, args);
+  }
+
+  /**
+   * Create log record with level WARN. If first argument is string, it is used as message format, like console.log do.
+   * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
+   *
+   * @param {...*} args Any arguments. Error must be one and last.
+   * @example
+   *
+   * logger.trace('User entered %s', userInput);
+   *
+   * logger.error('Error happen while sending email', err);
+   */
+  warn(...args) {
+    this.log(LEVELS.WARN, args);
+  }
+
+  /**
+   * Create log record with level ERROR. If first argument is string, it is used as message format, like console.log do.
+   * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
+   *
+   * @param {...*} args Any arguments. Error must be one and last.
+   * @example
+   *
+   * logger.trace('User entered %s', userInput);
+   *
+   * logger.error('Error happen while sending email', err);
+   */
+  error(...args) {
+    this.log(LEVELS.ERROR, args);
+  }
 }
-
-/**
- * Create log record with level TRACE. If first argument is string, it is used as message format, like console.log do.
- * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
- *
- * @param {...*} args Any arguments. Error must be one and last.
- * @example
- *
- * logger.trace('User entered %s', userInput);
- *
- * logger.error('Error happen while sending email', err);
- */
-Logger.prototype.trace = makeLogAtLevelMethod(LEVELS.TRACE);
-
-/**
- * Create log record with level DEBUG. If first argument is string, it is used as message format, like console.log do.
- * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
- *
- * @param {...*} args Any arguments. Error must be one and last.
- * @example
- *
- * logger.trace('User entered %s', userInput);
- *
- * logger.error('Error happen while sending email', err);
- */
-Logger.prototype.debug = makeLogAtLevelMethod(LEVELS.DEBUG);
-
-/**
- * Create log record with level INFO. If first argument is string, it is used as message format, like console.log do.
- * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
- *
- * @param {...*} args Any arguments. Error must be one and last.
- * @example
- *
- * logger.trace('User entered %s', userInput);
- *
- * logger.error('Error happen while sending email', err);
- */
-Logger.prototype.info = makeLogAtLevelMethod(LEVELS.INFO);
-
-/**
- * Create log record with level WARN. If first argument is string, it is used as message format, like console.log do.
- * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
- *
- * @param {...*} args Any arguments. Error must be one and last.
- * @example
- *
- * logger.trace('User entered %s', userInput);
- *
- * logger.error('Error happen while sending email', err);
- */
-Logger.prototype.warn = makeLogAtLevelMethod(LEVELS.WARN);
-
-/**
- * Create log record with level ERROR. If first argument is string, it is used as message format, like console.log do.
- * Supported modifiers %s, %d, %j, %%. If you want to output error, it must be one among all arguments and be last.
- *
- * @param {...*} args Any arguments. Error must be one and last.
- * @example
- *
- * logger.trace('User entered %s', userInput);
- *
- * logger.error('Error happen while sending email', err);
- */
-Logger.prototype.error = makeLogAtLevelMethod(LEVELS.ERROR);
 
 module.exports = Logger;

@@ -1,16 +1,18 @@
-var EOL = "\n";
-var quote = require("../quote");
-var LEVELS = require("../../levels");
-var stringify = require("../safe-json-stringify");
+"use strict";
 
-var compileTimestamp = require("../strftime");
+const EOL = "\n";
+const quote = require("../quote");
+const LEVELS = require("../../levels");
+const stringify = require("../safe-json-stringify");
 
-var spacePadding = new Array(1000).join(" ");
+const compileTimestamp = require("../strftime");
+
+const spacePadding = new Array(1000).join(" ");
 
 function pad(str, value) {
   if (str.length >= Math.abs(value)) return str;
 
-  var isRight = false;
+  let isRight = false;
 
   if (value < 0) {
     isRight = true;
@@ -18,7 +20,7 @@ function pad(str, value) {
   }
 
   if (str.length < value) {
-    var padding = spacePadding.slice(0, value - str.length);
+    const padding = spacePadding.slice(0, value - str.length);
     return isRight ? str + padding : padding + str;
   } else {
     return str;
@@ -38,9 +40,9 @@ function trunc(str, value) {
 }
 
 function formatError(err) {
-  var parts = err.stack ? err.stack.split("\n") : [];
-  var res = "";
-  for (var i = 0, l = parts.length; i < l; i++) {
+  const parts = err.stack ? err.stack.split("\n") : [];
+  let res = "";
+  for (let i = 0, l = parts.length; i < l; i++) {
     res += "  " + parts[i] + EOL;
   }
   return res;
@@ -50,7 +52,7 @@ function decorator(code) {
   return ["\u001b[" + code + "m", "\u001b[0;39m"];
 }
 
-var DECORATOR = {
+const DECORATOR = {
   black: decorator(30),
   red: decorator(31),
   green: decorator(32),
@@ -70,9 +72,9 @@ var DECORATOR = {
   "white.bold": decorator("1;" + 37)
 };
 
-var DEFAULT_DATE_FORMAT = "%Y/%m/%d %H:%M:%S,%L";
+const DEFAULT_DATE_FORMAT = "%Y/%m/%d %H:%M:%S,%L";
 
-var LEVEL_DECORATORS = {};
+const LEVEL_DECORATORS = {};
 LEVEL_DECORATORS[LEVELS.ERROR] = DECORATOR["red.bold"];
 LEVEL_DECORATORS[LEVELS.WARN] = DECORATOR["yellow"];
 LEVEL_DECORATORS[LEVELS.INFO] = DECORATOR["blue"];
@@ -80,16 +82,10 @@ LEVEL_DECORATORS[LEVELS.DEBUG] = ["", ""];
 LEVEL_DECORATORS[LEVELS.TRACE] = ["", ""];
 
 module.exports = function compile(onodes) {
-  var source = "";
-  var dateFormats = [];
-  var argumentKeys = [
-    "trunc",
-    "pad",
-    "formatError",
-    "LEVEL_DECORATORS",
-    "stringify"
-  ];
-  var argumentValues = [trunc, pad, formatError, LEVEL_DECORATORS, stringify];
+  let source = "";
+  const dateFormats = [];
+  const argumentKeys = ["trunc", "pad", "formatError", "LEVEL_DECORATORS", "stringify"];
+  const argumentValues = [trunc, pad, formatError, LEVEL_DECORATORS, stringify];
 
   function writeLine(code) {
     source += "__p += " + code + ";\n";
@@ -101,7 +97,7 @@ module.exports = function compile(onodes) {
 
   function processNodes(nodes) {
     nodes.forEach(function(node) {
-      var _name;
+      let _name;
 
       switch (node.type) {
         case "const":
@@ -121,17 +117,13 @@ module.exports = function compile(onodes) {
             case "c":
             case "lo":
             case "logger":
-              write("rec.name");
+              write("rec.logger");
               break;
 
             case "p":
             case "le":
             case "level":
               write("rec.levelname");
-              break;
-
-            case "pid":
-              write("rec.pid");
               break;
 
             case "m":
@@ -154,12 +146,7 @@ module.exports = function compile(onodes) {
               _name = "dateFormat" + dateFormats.length;
               argumentKeys.push(_name);
 
-              dateFormats.push(
-                compileTimestamp(
-                  node.args[0] || DEFAULT_DATE_FORMAT,
-                  node.args[1]
-                )
-              );
+              dateFormats.push(compileTimestamp(node.args[0] || DEFAULT_DATE_FORMAT, node.args[1]));
               write("__" + _name + "(rec.timestamp)");
               break;
 
@@ -173,9 +160,7 @@ module.exports = function compile(onodes) {
               break;
 
             default:
-              throw new Error(
-                "Message format node variable not supported: " + node.name
-              );
+              throw new Error("Message format node variable not supported: " + node.name);
           }
 
           if (node.trunc != null) {
@@ -194,9 +179,7 @@ module.exports = function compile(onodes) {
           } else if (DECORATOR[node.name]) {
             writeLine(quote(DECORATOR[node.name][0]));
           } else {
-            throw new Error(
-              "Message format node decorator not supported: " + node.name
-            );
+            throw new Error("Message format node decorator not supported: " + node.name);
           }
 
           processNodes(node.nodes);
@@ -223,12 +206,8 @@ module.exports = function compile(onodes) {
     ", __p = '';\n" +
     source +
     "return __p;\n}";
-  var result;
 
-  result = Function(argumentKeys, "return " + source).apply(
-    undefined,
-    argumentValues.concat(dateFormats)
-  );
+  const result = Function(argumentKeys, "return " + source).apply(undefined, argumentValues.concat(dateFormats));
 
   result.source = source;
 

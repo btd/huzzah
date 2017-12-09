@@ -1,3 +1,5 @@
+"use strict";
+
 function Const(text) {
   return { type: "const", v: text };
 }
@@ -5,12 +7,12 @@ function Var(name, pad) {
   return { type: "var", name: name, pad: pad };
 }
 
-var RE = /%([-_0])?([a-zA-Z%])/g;
+const RE = /%([-_0])?([a-zA-Z%])/g;
 
 module.exports = function parse(format) {
-  var nodes = [];
+  const nodes = [];
 
-  var index = 0,
+  let index = 0,
     s;
   format.replace(RE, function(_, varPad, varName, offset) {
     s = format.slice(index, offset);

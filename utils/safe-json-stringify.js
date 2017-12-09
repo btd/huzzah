@@ -1,5 +1,7 @@
+"use strict";
+
 function safeCycles() {
-  var seen = [];
+  const seen = [];
   return function(key, val) {
     if (!val || typeof val !== "object") {
       return val;

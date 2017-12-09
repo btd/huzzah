@@ -1,10 +1,12 @@
-var jsonFormat = require("./json-format");
+/*eslint-env mocha*/
+"use strict";
 
-var rec = {
+const jsonFormat = require("./json-format");
+
+const rec = {
   level: 30,
   levelname: "INFO",
-  name: "logger_name",
-  pid: 123,
+  logger: "logger_name",
   message: "text message",
   err: new Error("boom"),
   timestamp: new Date("2016-01-29T09:04:19.720Z"),
@@ -17,14 +19,14 @@ var rec = {
 
 describe("JSON Format", function() {
   it("should be possible to replace any context variable", function() {
-    var format = jsonFormat({
+    const format = jsonFormat({
       context: {
         a: function() {
           return { level: "super" };
         }
       }
     });
-    var recordString = format(rec);
+    const recordString = format(rec);
     JSON.parse(recordString).should.be.eql({
       context: { a: { level: "super" }, b: "abc" },
       level: 30,
@@ -35,8 +37,7 @@ describe("JSON Format", function() {
       },
       levelname: "INFO",
       message: "text message",
-      name: "logger_name",
-      pid: 123,
+      logger: "logger_name",
       timestamp: "2016-01-29T09:04:19.720Z",
       v: 0
     });

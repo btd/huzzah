@@ -1,5 +1,7 @@
-var LoggerFactory = require("./factory");
+"use strict";
 
-var defaultFactory = new LoggerFactory();
+const LoggerFactory = require("./factory");
+
+const defaultFactory = new LoggerFactory();
 
 module.exports = defaultFactory;

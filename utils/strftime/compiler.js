@@ -1,5 +1,7 @@
-var EOL = "\n";
-var quote = require("../quote");
+"use strict";
+
+const EOL = "\n";
+const quote = require("../quote");
 
 function padZero3(n) {
   if (n >= 0 && n < 10) {
@@ -24,7 +26,7 @@ function weekNumber(d, firstWeekday, tz) {
 
   // This works by shifting the weekday back by one day if we
   // are treating Monday as the first day of the week.
-  var wday = d["get" + tz + "Day"]();
+  let wday = d["get" + tz + "Day"]();
   if (firstWeekday === "monday") {
     if (wday === 0) {
       // Sunday
@@ -33,14 +35,15 @@ function weekNumber(d, firstWeekday, tz) {
       wday--;
     }
   }
-  var firstDayOfYear = new Date(d["get" + tz + "FullYear"](), 0, 1),
-    yday = (d - firstDayOfYear) / 86400000,
-    weekNum = (yday + 7 - wday) / 7;
+  const firstDayOfYear = new Date(d["get" + tz + "FullYear"](), 0, 1);
+  const yday = (d - firstDayOfYear) / 86400000;
+  const weekNum = (yday + 7 - wday) / 7;
+
   return Math.floor(weekNum);
 }
 
 function hours12(d, tz) {
-  var hour = d["get" + tz + "Hours"]();
+  let hour = d["get" + tz + "Hours"]();
   if (hour === 0) {
     hour = 12;
   } else if (hour > 12) {
@@ -49,17 +52,17 @@ function hours12(d, tz) {
   return hour;
 }
 
-var timestampIndex = 0;
+let timestampIndex = 0;
 
 module.exports = function compile(nodes, locale, compileFormatter, _tz) {
-  var tz = _tz === "UTC" ? _tz : "";
-  var source = "";
-  var dateFormats = [];
-  var argumentKeys = ["l", "pad2", "padZero3", "hours12", "weekNumber"];
-  var argumentValues = [locale, pad2, padZero3, hours12, weekNumber];
+  const tz = _tz === "UTC" ? _tz : "";
+  let source = "";
+  const dateFormats = [];
+  const argumentKeys = ["l", "pad2", "padZero3", "hours12", "weekNumber"];
+  const argumentValues = [locale, pad2, padZero3, hours12, weekNumber];
 
   function preCompileFormat(format) {
-    var name = "preCompiledTimestamp" + timestampIndex++;
+    const name = "preCompiledTimestamp" + timestampIndex++;
     argumentKeys.push(name);
     argumentValues.push(compileFormatter(format));
     return name;
@@ -75,7 +78,7 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
 
   function processNodes(nodes) {
     nodes.forEach(function(node) {
-      var padding = "0";
+      let padding = "0";
       switch (node.type) {
         case "const":
           return writeLine(quote(node.v));
@@ -269,9 +272,8 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
     ", __d, __p = '';\n" +
     source +
     "return __p;\n}";
-  var result;
 
-  result = Function(argumentKeys, "return " + source).apply(undefined, argumentValues.concat(dateFormats));
+  const result = Function(argumentKeys, "return " + source).apply(undefined, argumentValues.concat(dateFormats));
 
   result.source = source;
 
@@ -279,10 +281,10 @@ module.exports = function compile(nodes, locale, compileFormatter, _tz) {
 };
 
 module.exports.isoFormat = function(t) {
-  var d = new Date(t);
-  var __pad2 = pad2,
-    __padZero3 = padZero3,
-    __p = "";
+  const d = new Date(t);
+  const __pad2 = pad2,
+    __padZero3 = padZero3;
+  let __p = "";
   __p += d.getUTCFullYear();
   __p += "-";
   __p += __pad2(d.getUTCMonth() + 1, "0");

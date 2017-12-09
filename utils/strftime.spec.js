@@ -1,14 +1,17 @@
-var quote = require("./quote");
+/*eslint-env mocha*/
+"use strict";
 
-var compileStrftime = require("./strftime");
+const quote = require("./quote");
+
+const compileStrftime = require("./strftime");
 require("should");
 
-var EOL = "\n";
+const EOL = "\n";
 
-var date1 = new Date(2016, 0, 29, 9, 4, 19, 720);
-var date2 = new Date(2009, 9, 8, 14, 14, 9, 720);
+const date1 = new Date(2016, 0, 29, 9, 4, 19, 720);
+const date2 = new Date(2009, 9, 8, 14, 14, 9, 720);
 
-var testCases = [
+const testCases = [
   ["test", "test", "test"],
 
   ["%A", "Friday", "Thursday"],
